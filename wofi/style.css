@@ -1,0 +1,37 @@
+window {
+    margin: 0px;
+    border: 2px solid #7aa2f7;
+    background-color: rgba(26, 27, 38, 0.85);
+    border-radius: 15px;
+    font-family: "Adwaita Mono", sans-serif;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+#input {
+    margin: 20px 20px 10px 20px;
+    padding: 10px;
+    border: none;
+    color: #c0caf5;
+    background-color: #24283b;
+    border-radius: 10px;
+}
+
+#inner-box {
+    margin: 0px 20px 20px 20px;
+    background-color: transparent;
+}
+
+#entry {
+    margin: 5px 0px;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: #c0caf5;
+}
+
+#entry:selected {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+    font-weight: bold;
+}
