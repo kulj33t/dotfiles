@@ -1,0 +1,134 @@
+{
+    "layer": "top",
+    "position": "top",
+    "margin-top": 10,
+    "margin-left": 10,
+    "margin-right": 10,
+    "height": 40,
+
+    "modules-left": ["custom/launcher", "hyprland/window"],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": ["backlight", "pulseaudio", "pulseaudio#microphone", "battery", "bluetooth", "network", "tray","clock"],
+
+
+
+
+    // --- MODULE CONFIGURATION --- //
+
+
+"custom/launcher": {
+        "format": " Apps ",
+        "on-click": "pkill wofi || wofi --show drun",
+        "tooltip": false
+	},
+
+
+
+"hyprland/window": {
+        "format": "{class}",
+        "max-length": 50,
+        "separate-outputs": true,
+        "rewrite": {
+            "chromium-browser": "Chromium",
+            "google-chrome": "Chrome",
+            "kitty": "Terminal",
+            "firefox": "Firefox",
+            "vlc": "VLC Media Player",
+            "thunar": "Files",
+            "org.gnome.Nautilus": "Files",
+            "^(.*)": "$1"
+        }
+    },
+
+
+"hyprland/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": true,
+        "format": "{icon}",
+        "format-icons": {
+            "default": "",
+            "active": "",
+            "urgent": ""
+        }
+    },
+
+
+
+"clock": {
+        "format": "{:%H:%M}",
+        "format-alt": "{:%A, %B %d, %Y}",
+        "tooltip": false
+    },
+
+
+
+"backlight": {
+        "device": "intel_backlight",
+        "format": "{percent}% ",
+        "tooltip": false,
+        "on-scroll-up": "",
+        "on-scroll-down": "",
+        "on-click": ""
+    },
+
+
+
+"pulseaudio": {
+        "format": "{volume}% ",
+        "format-muted": "<span color='#565f89'>Muted </span>",
+        "on-click": "pavucontrol",
+        "on-scroll-up": "",
+        "on-scroll-down": "",
+        "tooltip": false
+    },
+
+
+"pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "<span color='#f7768e'></span>",
+        "format-source-muted": "<span color='#565f89'></span>",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "on-scroll-up": "",
+        "on-scroll-down": "",
+        "tooltip": false
+    },
+
+
+"battery": {
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "format": "{capacity}% {icon}",
+        "format-charging": "{capacity}% ",
+        "format-plugged": "{capacity}% ",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip": true
+    },
+
+
+
+"bluetooth": {
+        "format": "", 
+        "format-connected": "{device_alias} ",
+        "format-disabled": "󰂲",
+        "max-length": 15,
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
+    },
+
+
+"network": {
+        "format-wifi": "{essid} ",
+        "format-ethernet": "Wired ",
+        "format-disconnected": "",
+        "max-length": 20,
+        "tooltip-format": "{essid} ({signalStrength}%)"
+    },
+    
+"tray": {
+        "icon-size": 18,
+        "spacing": 10
+    }
+}

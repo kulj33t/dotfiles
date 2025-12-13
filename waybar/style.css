@@ -1,0 +1,89 @@
+* {
+    font-family: "Adwaita Mono", "Font Awesome 6 Free", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+
+window#waybar {
+    background-color: transparent;
+    color: #c0caf5;
+}
+
+
+
+#custom-launcher {
+    background-color: #1a1b26;
+    color: #7aa2f7;
+    padding: 0 15px;
+    margin-right: 10px;
+    border-radius: 15px;
+}
+
+
+#window {
+    background-color: #1a1b26;
+    color: #bb9af7;
+    padding: 0 15px;
+    border-radius: 15px;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+
+window#waybar.empty #window {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+#workspaces {
+    background-color: #1a1b26;
+    border-radius: 15px;
+    margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    color: #7aa2f7; /* Blue circles */
+    background-color: transparent;
+}
+
+#workspaces button.active {
+    color: #9ece6a; /* Green active circle */
+}
+
+#clock {
+    background-color: #1a1b26;
+    color: #66cdaa;
+    border-radius: 15px;
+    padding: 0 20px;
+    border: 2px solid #33467c;
+}
+
+
+
+#backlight, #pulseaudio, #battery, #bluetooth, #network, #tray {
+    background-color: #1a1b26;
+    padding: 0 12px;
+    margin-left: 8px;
+    border-radius: 15px;
+    color: #c0caf5;
+}
+
+
+#backlight { color: #e0af68; }
+#pulseaudio { color: #7dcfff; }
+
+#battery { color: #9ece6a; }
+#battery.warning { color: #e0af68; }
+#battery.critical { color: #f7768e; }
+#bluetooth { color: #7aa2f7; }
+#network { color: #9ece6a; }
+#tray { padding: 0 10px; }
