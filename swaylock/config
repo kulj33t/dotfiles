@@ -1,0 +1,43 @@
+#####################
+### IMAGE & LAYOUT ##
+#####################
+
+# specific image for lock screen
+image=~/.config/wallpaper/blueblur.png
+
+# If no image, use this solid background color
+color=1a1b26
+
+# Show the ring immediately
+show-failed-attempts
+daemonize
+ignore-empty-password
+
+
+####################
+### TOKYO COLORS ###
+####################
+
+# Ring colors (Tokyo Night Palette)
+ring-color=7aa2f7
+inside-color=1a1b26
+line-color=1a1b26
+separator-color=1a1b26
+
+# Key press highlights (Green for type, Red for backspace)
+key-hl-color=9ece6a
+bs-hl-color=f7768e
+
+# Verification (Purple)
+ring-ver-color=bb9af7
+inside-ver-color=1a1b26
+text-ver-color=c0caf5
+
+# Wrong Password (Red)
+ring-wrong-color=f7768e
+inside-wrong-color=1a1b26
+text-wrong-color=f7768e
+
+# Text colors
+text-color=c0caf5
+layout-text-color=c0caf5
