@@ -13,15 +13,19 @@ window#waybar {
 }
 
 
-
 #custom-launcher {
     background-color: #1a1b26;
     color: #7aa2f7;
     padding: 0 15px;
     margin-right: 10px;
     border-radius: 15px;
+    font-size: 18px;
 }
 
+#custom-launcher:hover {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+}
 
 #window {
     background-color: #1a1b26;
@@ -64,7 +68,7 @@ window#waybar.empty #window {
     color: #66cdaa;
     border-radius: 15px;
     padding: 0 20px;
-    border: 2px solid #33467c;
+ /* border: 2px solid #33467c;*/
 }
 
 
@@ -78,6 +82,8 @@ window#waybar.empty #window {
 }
 
 
+
+
 #backlight { color: #e0af68; }
 #pulseaudio { color: #7dcfff; }
 
@@ -86,4 +92,33 @@ window#waybar.empty #window {
 #battery.critical { color: #f7768e; }
 #bluetooth { color: #7aa2f7; }
 #network { color: #9ece6a; }
-#tray { padding: 0 10px; }
+
+
+
+#custom-updates {
+    background-color: #1a1b26;
+    padding: 0 10px;
+    margin-left: 10px;
+    border-radius: 15px;
+    color: #7dcfff;
+}
+
+#custom-updates.pending {
+    color: #e0af68;
+}
+
+
+
+#custom-clipboard {
+    background-color: #1a1b26;
+    color: #c0caf5;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+}
+
+
+#custom-clipboard:hover {
+    background-color: #7aa2f7;
+    color: #1a1b26;
+}

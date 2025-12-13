@@ -6,9 +6,9 @@
     "margin-right": 10,
     "height": 40,
 
-    "modules-left": ["custom/launcher", "hyprland/window"],
+    "modules-left": ["custom/launcher","clock", "hyprland/window"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["backlight", "pulseaudio", "pulseaudio#microphone", "battery", "bluetooth", "network", "tray","clock"],
+    "modules-right": ["custom/clipboard","backlight", "pulseaudio", "pulseaudio#microphone", "battery", "bluetooth", "network","custom/updates"],
 
 
 
@@ -17,7 +17,7 @@
 
 
 "custom/launcher": {
-        "format": " Apps ",
+        "format": "",
         "on-click": "pkill wofi || wofi --show drun",
         "tooltip": false
 	},
@@ -53,12 +53,20 @@
     },
 
 
-
 "clock": {
-        "format": "{:%H:%M}",
-        "format-alt": "{:%A, %B %d, %Y}",
+        "format": " {:%I:%M %p}",
+        "format-alt": " {:%A, %B %d, %Y}",
         "tooltip": false
     },
+
+
+"custom/clipboard": {
+        "format": "",
+        "on-click": "copyq toggle",
+        "on-click-right": "copyq menu",
+        "tooltip": false
+    },
+
 
 
 
@@ -126,9 +134,16 @@
         "max-length": 20,
         "tooltip-format": "{essid} ({signalStrength}%)"
     },
-    
-"tray": {
-        "icon-size": 18,
-        "spacing": 10
-    }
+   
+
+"custom/updates": {
+        "format": " {}",
+        "exec": "~/.config/waybar/scripts/updates.sh",
+        "return-type": "json",
+        "on-click": "~/.config/waybar/scripts/updates.sh check",
+        "signal": 8,
+        "tooltip": true
+    },
+
+
 }
