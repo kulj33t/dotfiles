@@ -121,6 +121,7 @@
         "format-connected": "{device_alias} ",
         "format-disabled": "󰂲",
         "max-length": 15,
+	"on-click": "kitty bluetoothctl",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"
@@ -132,6 +133,7 @@
         "format-ethernet": "Wired ",
         "format-disconnected": "",
         "max-length": 20,
+	"on-click":"kitty --hold nmcli device status",
         "tooltip-format": "{essid} ({signalStrength}%)"
     },
    
