@@ -122,3 +122,18 @@ window#waybar.empty #window {
     background-color: #7aa2f7;
     color: #1a1b26;
 }
+
+
+#custom-lock {
+    background-color: #1a1b26;
+    color: #dc143c;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+}
+
+
+#custom-lock:hover {
+    background-color: #dc143c;
+    color: #1e1e2e;
+}

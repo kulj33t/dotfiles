@@ -11,7 +11,7 @@ fi
 OPT_FULL="Full Screen"
 OPT_SELECT="Select Area"
 
-CHOICE=$(echo -e "${OPT_FULL}\n${OPT_SELECT}" | wofi --show dmenu --prompt "Screenshot" --width 250 --height 160 --location 0 --style "$HOME/.config/wofi/screenshot/style.css" --cache-file /dev/null)
+CHOICE=$(echo -e "${OPT_FULL}\n${OPT_SELECT}" | wofi --show dmenu --prompt "Screenshot" --location 0 --cache-file /dev/null)
 
 case "$CHOICE" in
     "$OPT_FULL")
