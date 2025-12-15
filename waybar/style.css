@@ -137,3 +137,30 @@ window#waybar.empty #window {
     background-color: #dc143c;
     color: #1e1e2e;
 }
+
+
+
+
+#custom-kbd_backlight {
+    background-color: #1a1b26;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* 0% State - Grey */
+#custom-kbd_backlight.zero {
+    color: #565f89;
+}
+
+/* 50% State - Green */
+#custom-kbd_backlight.half {
+    color: #9ece6a;
+}
+
+/* 100% State - Red */
+#custom-kbd_backlight.full {
+    color: #f7768e;
+}

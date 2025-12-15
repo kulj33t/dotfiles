@@ -8,7 +8,7 @@
 
     "modules-left": ["custom/launcher","clock", "hyprland/window"],
     "modules-center": ["hyprland/workspaces"],
-    "modules-right": ["custom/clipboard","backlight", "pulseaudio", "pulseaudio#microphone", "battery", "bluetooth", "network","custom/updates","custom/lock"],
+    "modules-right": ["custom/clipboard","custom/kbd_backlight","backlight", "pulseaudio", "pulseaudio#microphone", "battery", "bluetooth", "network","custom/updates","custom/lock"],
 
 
 
@@ -67,6 +67,14 @@
         "tooltip": false
     },
 
+
+"custom/kbd_backlight": {
+    "exec": "~/.config/waybar/scripts/kbdbacklight.sh",
+    "return-type": "json",
+    "on-click": "~/.config/waybar/scripts/kbdbacklight.sh toggle",
+    "interval": 1,
+    "tooltip": true
+},
 
 
 

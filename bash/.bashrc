@@ -40,3 +40,18 @@ PS1='\[\033[01;32m\]\u\[\033[01;31m\]@\[\033[38;5;135m\]\h\[\033[01;31m\]:\[\033
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias diff='diff --color=auto'
+
+#dnf
+
+alias i='sudo dnf install'
+alias update='sudo dnf update'
+alias search='dnf list | grep'
+alias search-i='dnf list --installed | grep'
+alias uses='dnf repoquery --requires'
+alias usedby='dnf repoquery --whatrequires'
+
+
+
+#keyboard
+
+alias keyboard-light='brightnessctl --device='kbd_backlight' set'
