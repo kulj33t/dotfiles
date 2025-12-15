@@ -1,0 +1,161 @@
+@define-color bg-color rgba(26, 27, 38, 0.6);
+@define-color card-bg rgba(26, 27, 38, 0.4);
+@define-color text-color #c0caf5;
+@define-color accent-color #7aa2f7;
+@define-color hover-color rgba(65, 72, 104, 0.5);
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+}
+
+.control-center {
+    background: @bg-color;
+    border: 1px solid rgba(122, 162, 247, 0.2);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    padding: 18px;
+}
+
+.widget-mpris {
+    background-color: @card-bg;
+    padding: 16px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.widget-mpris > box > button {
+    border-radius: 16px;
+}
+
+.widget-mpris-player > box > button {
+    background: transparent;
+    color: @text-color;
+    border-radius: 24px;
+    padding: 6px;
+    margin: 0 4px;
+}
+
+.widget-mpris-player > box > button:hover {
+    background-color: @hover-color;
+    color: @accent-color;
+}
+
+.widget-mpris-title {
+    font-weight: 800;
+    font-size: 1rem;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.widget-mpris-subtitle {
+    font-size: 0.8rem;
+    color: #a9b1d6;
+}
+
+.widget-volume {
+    background-color: @card-bg;
+    padding: 14px;
+    margin-bottom: 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+trough {
+    background: rgba(12, 12, 18, 0.4);
+    border-radius: 20px;
+    min-height: 8px;
+}
+
+highlight {
+    background: @accent-color;
+    border-radius: 20px;
+}
+
+slider {
+    background: #ffffff;
+    box-shadow: 0 0 4px rgba(0,0,0,0.5);
+    min-width: 16px;
+    min-height: 16px;
+    border-radius: 50%;
+}
+
+.widget-title {
+    color: @text-color;
+    margin: 8px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.widget-title > button {
+    background: rgba(122, 162, 247, 0.1);
+    color: @text-color;
+    border: 1px solid @accent-color;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.widget-title > button:hover {
+    background: @accent-color;
+    color: #1a1b26;
+    border: 1px solid @accent-color;
+}
+
+.notification-row {
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.notification {
+    background: @card-bg;
+    border: 1px solid rgba(122, 162, 247, 0.15);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.notification:hover {
+    background: rgba(26, 27, 38, 0.6);
+    border: 1px solid @accent-color;
+}
+
+.summary {
+    color: @accent-color;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.body {
+    color: @text-color;
+    font-size: 0.9rem;
+}
+
+.time {
+    color: #565f89;
+    font-size: 0.75rem;
+    margin-right: 4px;
+}
+
+.widget-dnd {
+    background: @card-bg;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.widget-dnd > switch {
+    background: rgba(12, 12, 18, 0.4);
+    border-radius: 12px;
+}
+
+.widget-dnd > switch:checked {
+    background: @accent-color;
+    border: 1px solid @accent-color;
+}
+
+.widget-dnd > switch slider {
+    background: #ffffff;
+    border-radius: 50%;
+}
