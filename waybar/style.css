@@ -44,31 +44,40 @@ window#waybar.empty #window {
 }
 
 
-
 #workspaces {
-    background-color: #1a1b26;
-    border-radius: 15px;
-    margin-right: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
 }
 
 #workspaces button {
-    padding: 0 5px;
-    color: #7aa2f7; /* Blue circles */
+    padding: 0px 8px;
     background-color: transparent;
+    color: #565f89;
+    
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 0;
+    min-width: 0;
 }
 
 #workspaces button.active {
-    color: #9ece6a; /* Green active circle */
+    color: #7aa2f7;
+    background-color: transparent;
+    box-shadow: none;
 }
 
+#workspaces button:hover {
+    background-color: transparent;
+    color: #c0caf5;
+    box-shadow: none;
+}
 #clock {
     background-color: #1a1b26;
     color: #66cdaa;
     border-radius: 15px;
     padding: 0 20px;
- /* border: 2px solid #33467c;*/
 }
 
 
@@ -90,7 +99,9 @@ window#waybar.empty #window {
 #battery { color: #9ece6a; }
 #battery.warning { color: #e0af68; }
 #battery.critical { color: #f7768e; }
-#bluetooth { color: #7aa2f7; }
+#bluetooth { color: #c0caf5; }
+#bluetooth.connected {color: #7aa2f7;}
+#bluetooth.disabled, #bluetooth.off {color: #f7768e;}
 #network { color: #9ece6a; }
 
 
@@ -150,17 +161,43 @@ window#waybar.empty #window {
     font-weight: bold;
 }
 
-/* 0% State - Grey */
 #custom-kbd_backlight.zero {
     color: #565f89;
 }
-
-/* 50% State - Green */
 #custom-kbd_backlight.half {
     color: #9ece6a;
 }
 
-/* 100% State - Red */
 #custom-kbd_backlight.full {
     color: #f7768e;
+}
+
+
+#cpu, #memory, #disk {
+    background-color: #1a1b26;
+    padding: 0 12px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+#cpu {
+    color: #cb94f7;
+}
+
+#memory {
+    color: #e0af68;
+}
+
+#memory.swap {
+    background-color: #1a1b26;
+    padding: 0 12px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: #565f89;
+}
+
+#disk {
+    color: #ffb7ce;
 }
