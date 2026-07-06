@@ -44,12 +44,12 @@ alias diff='diff --color=auto'
 #dnf
 
 alias i='sudo dnf install'
-alias update='sudo dnf update'
+#alias update='sudo dnf update'
 alias search='dnf list | grep'
 alias search-i='dnf list --installed | grep'
 alias uses='dnf repoquery --requires'
 alias usedby='dnf repoquery --whatrequires'
-
+alias update='sudo dnf update --exclude='*openh264*''
 
 
 #keyboard
