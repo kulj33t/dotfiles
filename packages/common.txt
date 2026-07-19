@@ -1,0 +1,29 @@
+# Core tools
+git
+curl
+wget
+unzip
+zip
+rsync
+
+# Shell utilities
+bash
+htop
+fastfetch
+
+# Terminal
+kitty
+
+# Audio
+pipewire
+wireplumber
+pavucontrol
+
+# Wayland tools
+wl-clipboard
+brightnessctl
+playerctl
+
+# Screenshot tools
+grim
+slurp

@@ -1,0 +1,12 @@
+2025-12-17 02:41:22.849 [info] Started local extension host with pid 10424.
+2025-12-17 02:41:23.037 [error] Cannot read properties of undefined (reading 'extensionId'): TypeError: Cannot read properties of undefined (reading 'extensionId')
+    at t (vscode-file://vscode-app/usr/share/codium/resources/app/out/vs/workbench/workbench.desktop.main.js:4125:2745)
+    at _Dt.recommendRemoteExtensionIfNeeded (vscode-file://vscode-app/usr/share/codium/resources/app/out/vs/workbench/workbench.desktop.main.js:4125:3497)
+2025-12-17 02:41:25.467 [info] [perf] Render performance baseline is 20ms
+2025-12-17 02:41:30.992 [warning] SettingsEditor2: Settings not included in settingsLayout.ts: workbench.secondarySideBar.enableDefaultVisibilityInOldWorkspace, commands.filters, extensions.requestTimeout, github.copilot.chat.agent.terminal.allowList, github.copilot.chat.agent.terminal.denyList, terminal.integrated.developer.devMode, terminal.integrated.developer.ptyHost.latency, terminal.integrated.developer.ptyHost.startupDelay
+2025-12-17 02:42:02.855 [info] Started local extension host with pid 10690.
+2025-12-17 02:42:02.958 [info] ChatSessionStore: Migrating 0 chat sessions from storage service to file system
+2025-12-17 02:42:03.040 [error] Cannot read properties of undefined (reading 'extensionId'): TypeError: Cannot read properties of undefined (reading 'extensionId')
+    at t (vscode-file://vscode-app/usr/share/codium/resources/app/out/vs/workbench/workbench.desktop.main.js:4125:2745)
+    at _Dt.recommendRemoteExtensionIfNeeded (vscode-file://vscode-app/usr/share/codium/resources/app/out/vs/workbench/workbench.desktop.main.js:4125:3497)
+2025-12-17 02:42:05.479 [info] [perf] Render performance baseline is 20ms

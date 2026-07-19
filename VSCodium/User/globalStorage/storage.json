@@ -1,0 +1,79 @@
+{
+    "telemetry.sqmId": "",
+    "telemetry.machineId": "788a1452c7e01bb1120fbe1c7bba9d1b06fa8693489bee1942696bfe5e3de65b",
+    "telemetry.devDeviceId": "ee3f1e0d-0999-428d-8b2c-426957c4ea2a",
+    "backupWorkspaces": {
+        "workspaces": [],
+        "folders": [
+            {
+                "folderUri": "file:///home/crane/codium"
+            }
+        ],
+        "emptyWindows": []
+    },
+    "windowControlHeight": 60,
+    "profileAssociations": {
+        "workspaces": {
+            "file:///home/crane/codium": "__default__profile__"
+        },
+        "emptyWindows": {
+            "1765919188660": "__default__profile__"
+        }
+    },
+    "windowsState": {
+        "lastActiveWindow": {
+            "folder": "file:///home/crane/codium",
+            "backupPath": "/home/crane/.config/VSCodium/Backups/e0585317f6b2ff48bb40d02d1055f20f",
+            "uiState": {
+                "mode": 1,
+                "x": 13,
+                "y": 63,
+                "width": 1259,
+                "height": 1524,
+                "zoomLevel": 3
+            }
+        },
+        "openedWindows": []
+    },
+    "theme": "hc-black",
+    "themeBackground": "#000000",
+    "windowSplash": {
+        "zoomLevel": 0,
+        "baseTheme": "hc-black",
+        "colorInfo": {
+            "foreground": "#ffffff",
+            "background": "#000000",
+            "editorBackground": "#000000",
+            "titleBarBackground": "#000000",
+            "titleBarBorder": "#6fc3df",
+            "activityBarBackground": "#000000",
+            "activityBarBorder": "#6fc3df",
+            "sideBarBackground": "#000000",
+            "sideBarBorder": "#6fc3df",
+            "statusBarBorder": "#6fc3df",
+            "windowBorder": "#6fc3df"
+        },
+        "layoutInfo": {
+            "sideBarSide": "left",
+            "editorPartMinWidth": 220,
+            "titleBarHeight": 35,
+            "activityBarWidth": 48,
+            "sideBarWidth": 300,
+            "auxiliaryBarWidth": 0,
+            "statusBarHeight": 22,
+            "windowBorder": false
+        }
+    },
+    "windowSplashWorkspaceOverride": {
+        "layoutInfo": {
+            "sideBarWidth": 300,
+            "auxiliaryBarWidth": 300,
+            "workspaces": {
+                "30bd3266822eb205d26357088dc455ea": {
+                    "sideBarVisible": true,
+                    "auxiliaryBarVisible": false
+                }
+            }
+        }
+    }
+}

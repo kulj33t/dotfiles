@@ -1,0 +1,11 @@
+2026-07-06 13:26:24.403 [info] Extension host with pid 24375 started
+2026-07-06 13:26:24.403 [info] Skipping acquiring lock for /home/crane/.config/VSCodium/User/workspaceStorage/30bd3266822eb205d26357088dc455ea.
+2026-07-06 13:26:24.409 [info] ExtensionService#_doActivateExtension vscode.github-authentication, startup: false, activationEvent: 'onAuthenticationRequest:github'
+2026-07-06 13:26:24.426 [info] ExtensionService#_doActivateExtension vscode.git-base, startup: true, activationEvent: '*', root cause: vscode.git
+2026-07-06 13:26:24.428 [info] ExtensionService#_doActivateExtension vscode.git, startup: true, activationEvent: '*'
+2026-07-06 13:26:24.452 [info] ExtensionService#_doActivateExtension vscode.github, startup: true, activationEvent: '*'
+2026-07-06 13:26:24.491 [info] Eager extensions activated
+2026-07-06 13:26:24.491 [info] ExtensionService#_doActivateExtension vscode.debug-auto-launch, startup: false, activationEvent: 'onStartupFinished'
+2026-07-06 13:26:24.492 [info] ExtensionService#_doActivateExtension vscode.merge-conflict, startup: false, activationEvent: 'onStartupFinished'
+2026-07-06 13:26:25.497 [info] Extension host terminating: renderer closed the MessagePort
+2026-07-06 13:26:25.504 [info] Extension host with pid 24375 exiting with code 0

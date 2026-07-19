@@ -1,0 +1,72 @@
+# Hyprland
+hyprland
+
+# Bar
+waybar
+
+# Launcher
+wofi
+
+# Notifications
+swaync
+
+# Lock screen
+swaylock
+
+# Wallpaper
+swaybg
+
+# Clipboard manager
+copyq
+
+# Network
+NetworkManager
+NetworkManager-tui
+
+# Bluetooth
+bluez
+bluez-tools
+
+# File manager
+thunar
+
+# GTK tools
+gtk3
+gtk4
+
+# Fonts
+fontconfig
+
+# System utilities
+procps-ng
+
+# Polkit
+polkit
+
+# Authentication agent
+polkit-gnome
+
+# Qt support
+qt5-qtwayland
+qt6-qtwayland
+
+# App support
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# Development tools
+gcc
+make
+cmake
+
+
+# Fedora Asahi hardware support
+mesa-dri-drivers
+mesa-vulkan-drivers
+
+# Firmware / hardware
+power-profiles-daemon
+
+# Laptop controls
+brightnessctl

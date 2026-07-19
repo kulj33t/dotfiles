@@ -1,0 +1,64 @@
+# Hyprland
+hyprland
+
+# Bar
+waybar
+
+# Launcher
+wofi
+
+# Notifications
+swaync
+
+# Lock
+swaylock
+
+# Wallpaper
+swaybg
+
+# Clipboard
+copyq
+
+# Network
+networkmanager
+
+# Bluetooth
+bluez
+bluez-utils
+
+# File manager
+thunar
+
+# GTK
+gtk3
+gtk4
+
+# Audio
+pipewire
+wireplumber
+pavucontrol
+
+# Wayland tools
+wl-clipboard
+grim
+slurp
+
+# Utilities
+fastfetch
+htop
+procps-ng
+
+# Qt Wayland
+qt5-wayland
+qt6-wayland
+
+# Portals
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+
+# Build tools
+base-devel
+cmake
+git
+

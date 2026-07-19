@@ -1,0 +1,12 @@
+2025/12/14-02:45:35.995 be5 Reusing MANIFEST /home/crane/.config/chromium/Default/IndexedDB/https_mail.google.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/14-02:45:35.995 be5 Recovering log #11
+2025/12/14-02:45:36.000 be5 Reusing old log /home/crane/.config/chromium/Default/IndexedDB/https_mail.google.com_0.indexeddb.leveldb/000011.log 
+2025/12/14-02:45:37.779 be5 Compacting 1@1 + 1@2 files
+2025/12/14-02:45:37.789 be5 Generated table #14@1: 218 keys, 1248683 bytes
+2025/12/14-02:45:37.789 be5 Compacted 1@1 + 1@2 files => 1248683 bytes
+2025/12/14-02:45:37.789 be5 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/12/14-02:45:37.789 be5 Delete type=2 #10
+2025/12/14-02:45:37.789 be5 Delete type=2 #12
+2025/12/14-02:45:43.074 be7 Level-0 table #16: started
+2025/12/14-02:45:43.100 be7 Level-0 table #16: 3144728 bytes OK
+2025/12/14-02:45:43.101 be7 Delete type=0 #11

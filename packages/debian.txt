@@ -1,0 +1,44 @@
+# Terminal
+kitty
+
+# Utilities
+git
+curl
+wget
+unzip
+zip
+rsync
+htop
+fastfetch
+
+# Audio
+pipewire
+wireplumber
+pavucontrol
+
+# Network
+network-manager
+
+# Bluetooth
+bluez
+
+# GTK
+gtk3
+gtk4
+
+# Wayland tools
+wl-clipboard
+grim
+slurp
+brightnessctl
+playerctl
+
+# File manager
+thunar
+
+# Qt support
+qtwayland5
+
+# Build tools
+build-essential
+cmake
