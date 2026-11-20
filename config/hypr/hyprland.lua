@@ -2,6 +2,7 @@
 require("lua.environment")
 require("lua.monitors")
 require("lua.appearance")
+require("lua.gestures")
 require("lua.rules")
 require("lua.binds")
 require("lua.autostart")

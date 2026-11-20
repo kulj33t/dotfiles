@@ -16,5 +16,5 @@ case "$CHOICE" in
     "$OPT_SUSPEND") loginctl suspend ;;
     "$OPT_REBOOT") loginctl reboot ;;
     "$OPT_SHUTDOWN") loginctl poweroff ;;
-    "$OPT_LOGOUT") hyprctl dispatch exit ;;
+    "$OPT_LOGOUT") hyprctl dispatch 'hl.dsp.exit()' ;;
 esac

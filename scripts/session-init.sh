@@ -36,7 +36,7 @@ fi
 if command -v swayidle >/dev/null 2>&1 && ! pgrep -u "$UID" -x swayidle >/dev/null 2>&1; then
     swayidle -w \
         timeout 180 "$CONFIG_DIR/scripts/lock.sh" \
-        timeout 300 "hyprctl dispatch dpms off" \
-        resume "hyprctl dispatch dpms on" \
+        timeout 300 "hyprctl dispatch 'hl.dsp.dpms({ action = \"disable\" })'" \
+        resume "hyprctl dispatch 'hl.dsp.dpms({ action = \"enable\" })'" \
         before-sleep "$CONFIG_DIR/scripts/lock.sh" >/dev/null 2>&1 &
 fi

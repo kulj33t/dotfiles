@@ -1,23 +1,33 @@
 #!/usr/bin/env bash
-install_packages_arch() {
-    if [[ "$(uname -m)" != x86_64 ]]; then
-        printf 'The official Arch package map is validated for x86_64; detected %s.\n' "$(uname -m)" >&2
+
+os_update_system() {
+    echo 'Updating Arch Linux before installing packages (full sync and upgrade avoids partial upgrades)...'
+    if ! sudo pacman -Syu --noconfirm; then
+        echo 'Arch system update failed; no dotfiles were deployed.' >&2
         return 1
     fi
+}
 
-    echo 'Installing required packages from Arch repositories...'
+_install_required_arch() {
+    sudo pacman -S --needed --noconfirm "$@"
+}
+
+_install_optional_arch() {
+    sudo pacman -S --needed --noconfirm "$1"
+}
+
+os_install_packages() {
     local required=(
         hyprland waybar wofi kitty swaync swayidle swaylock swaybg
         xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-xwayland
+    )
+    local optional=(
         cliphist wl-clipboard brightnessctl playerctl grim slurp jq
         zsh fastfetch htop thunar xdg-utils libnotify fontconfig adwaita-icon-theme adwaita-cursors
-        pavucontrol blueman wireplumber pipewire pipewire-pulse curl tar xz procps-ng pacman-contrib
+        pavucontrol blueman wireplumber pipewire pipewire-pulse curl tar procps-ng pacman-contrib
+        gtklock swappy awww networkmanager polkit-gnome
     )
-    sudo pacman -S --needed --noconfirm "${required[@]}" || return 1
 
-    local optional
-    for optional in gtklock swappy awww networkmanager polkit-gnome; do
-        sudo pacman -S --needed --noconfirm "$optional" >/dev/null 2>&1 || \
-            printf 'Optional package unavailable or skipped: %s\n' "$optional"
-    done
+    install_required_packages 'Arch Linux' _install_required_arch "${required[@]}" || return 1
+    install_optional_packages _install_optional_arch "${optional[@]}"
 }

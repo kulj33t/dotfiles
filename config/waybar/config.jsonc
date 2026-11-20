@@ -113,7 +113,7 @@
     "pulseaudio": {
         "format": "{volume}% ",
         "format-muted": "<span color='#565f89'>Muted </span>",
-        "on-click": "hyprctl dispatch exec \"[float;size 50% 50%;center] pavucontrol\"",
+        "on-click": "pavucontrol",
         "tooltip": false
     },
 
@@ -142,7 +142,7 @@
         "format-connected": "{device_alias} ",
         "format-disabled": "",
         "max-length": 15,
-        "on-click": "hyprctl dispatch exec \"[float;size 50% 50%;center] blueman-manager\"",
+        "on-click": "blueman-manager",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}"

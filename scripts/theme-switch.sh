@@ -7,6 +7,7 @@ CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
 THEME="${1:-tokyo-night}"
 REQUESTED_WALLPAPER="${2:-}"
 QUIET="${3:-}"
+SEED_ONLY="${4:-}"
 THEMES_DIR="$CONFIG_DIR/themes"
 if [[ ! -d "$THEMES_DIR" ]]; then
     THEMES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../themes" && pwd)"
@@ -60,18 +61,23 @@ text-color=${COLOR_FG#\#}
 layout-text-color=${COLOR_FG#\#}
 EOF
 
-if command -v hyprctl >/dev/null 2>&1 && [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
-    hyprctl eval "hl.config({ ['general.col.active_border'] = '$HYPR_BORDER_ACTIVE' })" >/dev/null 2>&1 || true
-    hyprctl eval "hl.config({ ['general.col.inactive_border'] = '$HYPR_BORDER_INACTIVE' })" >/dev/null 2>&1 || true
-    hyprctl eval "hl.config({ ['decoration.shadow.color'] = '$HYPR_SHADOW' })" >/dev/null 2>&1 || true
-fi
+if [[ "$SEED_ONLY" != "--seed-only" ]]; then
+    if command -v hyprctl >/dev/null 2>&1 && [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+        if command -v timeout >/dev/null 2>&1; then
+            timeout 3s hyprctl eval "hl.config({ ['general.col.active_border'] = '$HYPR_BORDER_ACTIVE' })" >/dev/null 2>&1 || true
+            timeout 3s hyprctl eval "hl.config({ ['general.col.inactive_border'] = '$HYPR_BORDER_INACTIVE' })" >/dev/null 2>&1 || true
+            timeout 3s hyprctl eval "hl.config({ ['decoration.shadow.color'] = '$HYPR_SHADOW' })" >/dev/null 2>&1 || true
+        fi
+    fi
 
-pkill -SIGUSR2 waybar 2>/dev/null || true
-if command -v swaync-client >/dev/null 2>&1; then
-    swaync-client --reload-css >/dev/null 2>&1 || true
-fi
-if command -v kitty >/dev/null 2>&1; then
-    kitty @ --to unix:/tmp/kitty set-colors --all "$CONFIG_DIR/kitty/theme.conf" >/dev/null 2>&1 || true
+    pkill -SIGUSR2 waybar 2>/dev/null || true
+    if command -v swaync-client >/dev/null 2>&1 && command -v timeout >/dev/null 2>&1; then
+        timeout 3s swaync-client --reload-css >/dev/null 2>&1 || true
+    fi
+    if command -v kitty >/dev/null 2>&1 && command -v timeout >/dev/null 2>&1; then
+        kitty_target="${KITTY_LISTEN_ON:-unix:/tmp/kitty}"
+        timeout 3s kitty @ --to "$kitty_target" set-colors --all "$CONFIG_DIR/kitty/theme.conf" >/dev/null 2>&1 || true
+    fi
 fi
 
 WALLPAPER="$REQUESTED_WALLPAPER"
@@ -98,7 +104,11 @@ fi
 
 printf '%s\n' "$THEME" > "$CONFIG_DIR/dotfiles/current_theme"
 if [[ -n "$WALLPAPER" && -x "$CONFIG_DIR/scripts/wallpaper-set.sh" ]]; then
-    "$CONFIG_DIR/scripts/wallpaper-set.sh" "$WALLPAPER"
+    if [[ "$SEED_ONLY" == "--seed-only" ]]; then
+        printf '%s\n' "$WALLPAPER" > "$CONFIG_DIR/dotfiles/current_wallpaper"
+    else
+        "$CONFIG_DIR/scripts/wallpaper-set.sh" "$WALLPAPER"
+    fi
 fi
 
 if [[ "$QUIET" != "--quiet" ]] && command -v notify-send >/dev/null 2>&1; then

@@ -32,7 +32,6 @@ hl.config({
     },
     misc = {
         disable_hyprland_logo = true,
-        vfr = true,
         session_lock_blur = true,
         session_lock_xray = true,
     },
@@ -44,10 +43,6 @@ hl.config({
             natural_scroll = true,
             scroll_factor = 1.5,
         },
-    },
-    gestures = {
-        workspace_swipe = true,
-        workspace_swipe_fingers = 3,
     },
 })
 hl.config({
@@ -61,8 +56,8 @@ hl.curve("fluent", {
 })
 
 for _, animation in ipairs({ "windows", "windowsIn", "windowsOut" }) do
-    hl.animation({ leaf = animation, enabled = true, speed = 4, curve = "fluent", style = "popin 80%" })
+    hl.animation({ leaf = animation, enabled = true, speed = 4, bezier = "fluent", style = "popin 80%" })
 end
-hl.animation({ leaf = "fade", enabled = true, speed = 3, curve = "default" })
-hl.animation({ leaf = "border", enabled = true, speed = 3, curve = "default" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 4, curve = "fluent", style = "slide" })
+hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "default" })
+hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "default" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 4, bezier = "fluent", style = "slide" })

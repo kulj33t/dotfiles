@@ -1,167 +1,28 @@
 #!/usr/bin/env bash
-# Bootstrap the dotfiles on supported Linux distributions.
+# Orchestrate platform checks, system updates, package installation, and deployment.
 
 set -euo pipefail
 REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 
-if [[ -n "${XDG_CONFIG_HOME:-}" && "$XDG_CONFIG_HOME" != /* ]]; then
-    printf 'XDG_CONFIG_HOME must be an absolute path: %s\n' "$XDG_CONFIG_HOME" >&2
-    exit 1
-fi
-CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+source "$REPO_DIR/installer/lib/context.sh"
+installer_context_init "$REPO_DIR"
 
-normalize_absolute_path() {
-    local input_path="$1"
-    local normalized=/ remaining component candidate physical=/
-    local -a components=()
-
-    IFS=/ read -r -a components <<< "$input_path"
-    for component in "${components[@]}"; do
-        case "$component" in
-            ''|.) ;;
-            ..)
-                normalized="${normalized%/*}"
-                [[ -n "$normalized" ]] || normalized=/
-                ;;
-            *) normalized="${normalized%/}/$component" ;;
-        esac
-    done
-
-    remaining="${normalized#/}"
-    while [[ -n "$remaining" ]]; do
-        component="${remaining%%/*}"
-        if [[ "$remaining" == */* ]]; then
-            remaining="${remaining#*/}"
-        else
-            remaining=
-        fi
-        candidate="${physical%/}/$component"
-        if [[ -d "$candidate" ]]; then
-            physical="$(cd "$candidate" && pwd -P)" || return 1
-        elif [[ -e "$candidate" || -L "$candidate" ]]; then
-            if [[ -n "$remaining" ]]; then
-                printf 'Path component is not a directory: %s\n' "$candidate" >&2
-                return 1
-            fi
-            physical="$candidate"
-        else
-            physical="$candidate"
-            if [[ -n "$remaining" ]]; then
-                physical="${physical%/}/$remaining"
-            fi
-            break
-        fi
-    done
-    printf '%s\n' "$physical"
-}
-
-CONFIG_HOME="$(normalize_absolute_path "$CONFIG_HOME")" || exit 1
-HOME_REAL="$(normalize_absolute_path "$HOME")" || exit 1
-if [[ "$CONFIG_HOME" == / || "$CONFIG_HOME" == "$HOME_REAL" || \
-      "$CONFIG_HOME" == "$REPO_DIR" || "$CONFIG_HOME" == "$REPO_DIR/"* || \
-      "$REPO_DIR" == "$CONFIG_HOME/"* ]]; then
-    printf 'XDG_CONFIG_HOME must be a separate directory outside the home root and dotfiles checkout: %s\n' "$CONFIG_HOME" >&2
-    exit 1
-fi
-if [[ -e "$CONFIG_HOME" && ! -d "$CONFIG_HOME" ]]; then
-    printf 'XDG_CONFIG_HOME must be a directory: %s\n' "$CONFIG_HOME" >&2
-    exit 1
-fi
-export XDG_CONFIG_HOME="$CONFIG_HOME"
-
-for required_path in config scripts themes home installer; do
-    if [[ ! -d "$REPO_DIR/$required_path" ]]; then
-        printf 'Installer source directory is missing: %s\n' "$REPO_DIR/$required_path" >&2
-        exit 1
-    fi
-done
-
-if (( EUID == 0 )); then
-    echo 'Run this installer as your regular user, not root.' >&2
-    exit 1
-fi
-
-for command_name in bash sudo; do
-    if ! command -v "$command_name" >/dev/null 2>&1; then
-        printf 'Required command is missing: %s\n' "$command_name" >&2
-        exit 1
-    fi
-done
-
-source "$REPO_DIR/installer/lib/detect-distro.sh"
-DISTRO=$(detect_distro)
-if [[ "$DISTRO" == fedora ]]; then
-    # detect_distro runs in command substitution, so its sourced release fields
-    # are not visible in this shell. Load them for the Fedora source message.
-    # shellcheck source=/dev/null
-    source /etc/os-release
-fi
-case "$DISTRO" in
-    arch|fedora|opensuse|debian) ;;
-    debian-unsupported)
-        echo 'Supported Debian release: Debian 13 (Trixie), with official Trixie backports.' >&2
-        exit 1
-        ;;
-    fedora-unsupported)
-        echo 'Supported Fedora targets: package-managed Fedora 43–45 on x86_64 or aarch64. Fedora Atomic editions need a different deployment flow.' >&2
-        exit 1
-        ;;
-    opensuse-unsupported)
-        echo 'This installer supports package-managed openSUSE Tumbleweed. MicroOS, Aeon, and Kalpa require a different deployment flow.' >&2
-        exit 1
-        ;;
-    *)
-        printf 'Unsupported distribution: %s\n' "$DISTRO" >&2
-        echo 'Targets: x86_64 Arch Linux, Fedora 43–45 (x86_64 or aarch64), openSUSE Tumbleweed, Debian 13 Trixie.' >&2
-        exit 1
-        ;;
-esac
-
-case "$DISTRO" in
-    arch) package_manager=pacman ;;
-    fedora) package_manager=dnf ;;
-    opensuse) package_manager=zypper ;;
-    debian) package_manager=apt-get ;;
-esac
-if ! command -v "$package_manager" >/dev/null 2>&1; then
-    printf 'Required package manager is missing for %s: %s\n' "$DISTRO" "$package_manager" >&2
-    exit 1
-fi
-
-if [[ "$DISTRO" == arch && "$(uname -m)" != x86_64 ]]; then
-    printf 'The Arch package map targets official x86_64 Arch Linux; detected %s.\n' "$(uname -m)" >&2
-    exit 1
-fi
-
-printf 'Detected target: %s (%s)\n' "$DISTRO" "$(uname -m)"
-if [[ "$DISTRO" == fedora ]]; then
-    if [[ "$(uname -m)" == aarch64 ]]; then
-        if [[ "${VERSION_ID%%.*}" == 45 ]]; then
-            echo 'Fedora 45 aarch64 uses the hermitfeather/hyprland COPR for the Lua-compatible Hyprland build.'
-        else
-            echo 'Fedora 43–44 aarch64 uses the nett00n/hyprland COPR for the Lua-compatible Hyprland build.'
-        fi
-    else
-        echo 'Fedora x86_64 uses the ashbuk/Hyprland-Fedora COPR for the Lua-compatible Hyprland build.'
-    fi
-elif [[ "$DISTRO" == debian ]]; then
-    echo 'Debian installs Hyprland from the official Trixie backports repository.'
-fi
-read -r -p 'Install packages and deploy these dotfiles? [y/N]: ' confirm
-[[ "$confirm" =~ ^[yY]$ ]] || { echo 'Cancelled.'; exit 0; }
-sudo -v
-
+source "$REPO_DIR/installer/lib/packages/common.sh"
+source "$REPO_DIR/installer/lib/packages/$DISTRO.sh"
 source "$REPO_DIR/installer/lib/backup.sh"
 source "$REPO_DIR/installer/lib/deploy.sh"
 source "$REPO_DIR/installer/lib/detect-hardware.sh"
 source "$REPO_DIR/installer/lib/fonts.sh"
 
-case "$DISTRO" in
-    arch) source "$REPO_DIR/installer/lib/packages/arch.sh"; install_packages_arch ;;
-    fedora) source "$REPO_DIR/installer/lib/packages/fedora.sh"; install_packages_fedora ;;
-    opensuse) source "$REPO_DIR/installer/lib/packages/opensuse.sh"; install_packages_opensuse ;;
-    debian) source "$REPO_DIR/installer/lib/packages/debian.sh"; install_packages_debian ;;
-esac
+read -r -p 'Update system packages, install the desktop packages, and deploy these configs? [y/N]: ' confirm
+[[ "$confirm" =~ ^[yY]$ ]] || { echo 'Cancelled.'; exit 0; }
+if ! sudo -v; then
+    echo 'Could not authenticate with sudo; no system changes were made.' >&2
+    exit 1
+fi
+
+os_update_system
+os_install_packages
 
 check_hyprland_version() {
     local version_line major minor
@@ -190,8 +51,8 @@ deploy_configs "$REPO_DIR"
 install_fonts
 configure_hardware "$CONFIG_HOME"
 
-# Seed runtime palette files before the first Hyprland session starts.
-bash "$CONFIG_HOME/scripts/theme-switch.sh" tokyo-night "" --quiet
+# Generate theme files/state without contacting a running compositor or app IPC socket.
+bash "$CONFIG_HOME/scripts/theme-switch.sh" tokyo-night "" --quiet --seed-only
 
 cat <<EOF
 
@@ -201,5 +62,10 @@ Lock screen: GTKLock when available; swaylock fallback
 Wallpaper: swaybg baseline; awww transitions when its package is available
 
 Hyprland auto-starts for Bash logins on TTY1; display-manager setup is unchanged.
-The installer does not change system-wide GPU or boot settings.
+The installer updated the system packages and did not change GPU or boot settings.
 EOF
+
+if (( OPTIONAL_PACKAGE_SKIPPED > 0 )); then
+    printf '%s optional packages were skipped. Details: %s\n' \
+        "$OPTIONAL_PACKAGE_SKIPPED" "$OPTIONAL_PACKAGE_LOG"
+fi

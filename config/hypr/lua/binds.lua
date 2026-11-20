@@ -6,16 +6,20 @@ local config_home = os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.con
 local scripts = config_home .. "/scripts/"
 
 command("SUPER + T", "kitty")
-command("SUPER + Q", "hyprctl dispatch killactive")
-command("SUPER + SHIFT + M", "hyprctl dispatch exit")
 command("SUPER + E", "thunar")
 command("SUPER + SPACE", "wofi --show drun")
 command("SUPER + B", "xdg-open https://")
 command("SUPER + A", "pavucontrol")
 command("SUPER + L", scripts .. "lock.sh")
 command("SUPER + N", "swaync-client -t -s")
-command("SUPER + F", "hyprctl dispatch togglefloating; hyprctl dispatch centerwindow")
-command("SUPER + J", "hyprctl dispatch layoutmsg togglesplit")
+
+hl.bind("SUPER + Q", hl.dsp.window.close())
+hl.bind("SUPER + SHIFT + M", hl.dsp.exit())
+hl.bind("SUPER + F", function()
+    hl.dispatch(hl.dsp.window.float({ action = "toggle" }))
+    hl.dispatch(hl.dsp.window.center())
+end)
+hl.bind("SUPER + J", hl.dsp.layout("togglesplit"))
 
 command("SUPER + SHIFT + L", scripts .. "wofi-power.sh")
 command("SUPER + SHIFT + S", scripts .. "wofi-screenshot.sh")
@@ -24,19 +28,20 @@ command("SUPER + V", scripts .. "wofi-clipboard.sh")
 command("SUPER + SHIFT + W", scripts .. "wofi-wallpaper.sh")
 
 for key, direction in pairs({ left = "l", right = "r", up = "u", down = "d" }) do
-    command("SUPER + " .. key, "hyprctl dispatch movefocus " .. direction)
+    hl.bind("SUPER + " .. key, hl.dsp.focus({ direction = direction }))
 end
 
 for workspace = 1, 10 do
     local key = tostring(workspace % 10)
-    command("SUPER + " .. key, "hyprctl dispatch workspace " .. workspace)
-    command("SUPER + SHIFT + " .. key, "hyprctl dispatch movetoworkspace " .. workspace)
+    local workspace_name = tostring(workspace)
+    hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = workspace_name }))
+    hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = workspace_name }))
 end
 
-command("SUPER + SHIFT + right", "hyprctl dispatch resizeactive 20 0", { repeating = true })
-command("SUPER + SHIFT + left", "hyprctl dispatch resizeactive -20 0", { repeating = true })
-command("SUPER + SHIFT + up", "hyprctl dispatch resizeactive 0 -20", { repeating = true })
-command("SUPER + SHIFT + down", "hyprctl dispatch resizeactive 0 20", { repeating = true })
+hl.bind("SUPER + SHIFT + right", hl.dsp.window.resize({ x = 20, y = 0, relative = true }), { repeating = true })
+hl.bind("SUPER + SHIFT + left", hl.dsp.window.resize({ x = -20, y = 0, relative = true }), { repeating = true })
+hl.bind("SUPER + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -20, relative = true }), { repeating = true })
+hl.bind("SUPER + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 20, relative = true }), { repeating = true })
 
 command("XF86AudioRaiseVolume", "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+", { repeating = true, locked = true })
 command("XF86AudioLowerVolume", "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-", { repeating = true, locked = true })

@@ -14,7 +14,7 @@ Login session
     └── wallpaper switcher ── awww transitions, swaybg fallback
 ```
 
-`config/hypr/hyprland.lua` is the entry point. Its `lua/` modules own environment, monitor defaults, appearance, rules, binds, and session startup. Shell utilities live in `scripts/`; user interface settings live in `config/`; curated palettes and their surface-specific CSS live in `themes/`.
+`config/hypr/hyprland.lua` is the entry point. Its `lua/` modules own environment, monitor defaults, appearance and animations, gestures, rules, binds, and session startup. Animation curves use Hyprland's `hl.curve` API; gestures use `hl.gesture`; internal compositor actions use Lua dispatchers. Shell utilities live in `scripts/`; user interface settings live in `config/`; curated palettes and their surface-specific CSS live in `themes/`.
 
 ## Chosen components
 
@@ -58,13 +58,28 @@ Curated palettes are the first implementation. Automatic palette extraction (for
 
 ## Installation and ownership
 
-Run `./install.sh` as a normal user with an absolute `XDG_CONFIG_HOME` if overriding the default. After a single confirmation it installs required/optional packages, checks Hyprland version, backs up conflicting dotfile directories into `~/.dotfiles-backup.<timestamp>.<suffix>`, copies config/scripts/themes into `$XDG_CONFIG_HOME`, links the Bash/Zsh startup files, downloads the Nerd Font, and seeds the initial theme.
+Run `./install.sh` as a normal user with an absolute `XDG_CONFIG_HOME` if overriding the default. `install.sh` coordinates shared context checks and loads one package module from `installer/lib/packages/` for the detected distribution. The update step uses `pacman -Syu` on Arch, `dnf upgrade --refresh` on Fedora, `zypper dup` on Tumbleweed, and `apt-get update` plus `apt-get upgrade` on Debian. Each module then installs core desktop packages and attempts optional packages individually. Missing optional packages are skipped and their package-manager output is logged to `~/.local/state/dotfiles-installer/optional-packages.log`; a failed core transaction stops before configuration deployment. After a single confirmation, the installer checks Hyprland's version, backs up conflicting dotfile directories into `~/.dotfiles-backup.<timestamp>.<suffix>`, copies config/scripts/themes into `$XDG_CONFIG_HOME`, links the Bash/Zsh startup files, downloads the Nerd Font with a time limit, and seeds theme files without contacting a running desktop session.
 
 The Bash profile auto-starts Hyprland on TTY1; the installer does not configure a display manager, enable a network service, change boot settings, or force GPU environment variables. GPU detection is informational so Mesa, NVIDIA, and Asahi defaults remain under the distro's control.
 
+## Fedora execution and failure boundaries
+
+The active Fedora path is deliberately divided so package and distribution changes stay local to their modules:
+
+| Stage | Module | Behavior on failure |
+|---|---|---|
+| Detect release, architecture, paths, and required commands | `installer/lib/context.sh` and `installer/lib/detect-distro.sh` | Reject unsupported releases, architectures, Atomic editions, missing modules, or missing package managers before asking for confirmation. |
+| Refresh and upgrade Fedora packages | `installer/lib/packages/fedora.sh` | Stop before dotfile deployment if `dnf upgrade --refresh` fails. |
+| Select and enable the matching Hyprland COPR | `installer/lib/packages/fedora.sh` | Install/check the DNF5 COPR plugin, reuse an enabled repo when present, and stop if the selected repo cannot be enabled. |
+| Install desktop core packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Install as one required transaction. A failed transaction stops before backup or deployment. |
+| Try optional packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Attempt one package at a time; continue when a package is missing or its install fails, and log details to `~/.local/state/dotfiles-installer/optional-packages.log`. |
+| Confirm Hyprland API version, back up, deploy, configure, and seed theme state | `install.sh` plus shared `installer/lib/` modules | Reject Hyprland older than 0.55 before deployment; seed files without calling compositor or Kitty IPC, so install completion does not depend on a running desktop session. |
+
+For a Fedora session that is already running, reload the deployed config and inspect Hyprland's own error list with `hyprctl reload` followed by `hyprctl configerrors`. A real Fedora compositor run is still needed to validate display-specific behavior, session lock, portals, and device availability; package mocks cannot verify those runtime paths.
+
 ## Current validation stage
 
-The architecture and source files have been aligned. Runtime validation still needs to happen in a real Hyprland session on each target distribution, especially Fedora COPR installation, GTKLock layer matching, notification-panel behavior, awww package availability, and the desktop portal's screen-sharing flow.
+The current runtime target is Fedora 45 aarch64 with Hyprland 0.56.2, as shown in the install log. In that Fedora session, run `hyprctl reload` and then `hyprctl configerrors`; exercise window open/close and workspace animations, the three-finger workspace gesture, floating pavucontrol/blueman windows, the lock and idle paths, theme switching, and screen sharing. The next distro-specific pass follows after Fedora's config and install flow are clean.
 
 ## References
 

@@ -16,7 +16,7 @@ install_fonts() {
 
     mkdir -p "$font_dir"
     archive=$(mktemp "${TMPDIR:-/tmp}/jetbrains-nerd-font.XXXXXX.tar.xz") || return 0
-    if ! curl -fL --retry 2 --connect-timeout 15 \
+    if ! curl -fL --retry 2 --connect-timeout 15 --max-time 120 \
         'https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz' \
         -o "$archive"; then
         rm -f "$archive"
