@@ -1,0 +1,54 @@
+@import "colors.css";
+
+window {
+    margin: 0px;
+    border: 1px solid @accent-color;
+    background-color: @bg-alpha;
+    border-radius: 18px;
+    font-family: "JetBrainsMono Nerd Font", "Adwaita Mono", sans-serif;
+    font-size: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+#input {
+    margin: 16px 16px 10px 16px;
+    padding: 10px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: @text-color;
+    background-color: @input-bg;
+    border-radius: 12px;
+    font-size: 16px;
+}
+
+#input:focus {
+    border: 1px solid @accent-color;
+}
+
+#inner-box {
+    margin: 6px 16px 16px 16px;
+    background-color: transparent;
+}
+
+#entry {
+    margin: 3px 0px;
+    padding: 8px 12px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: @text-color;
+    transition: all 0.15s ease;
+}
+
+#entry:selected {
+    background-color: @accent-color;
+    color: #1a1b26;
+    font-weight: bold;
+}
+
+#text {
+    margin-left: 10px;
+    color: inherit;
+}
+
+#img {
+    margin-right: 4px;
+}

@@ -1,0 +1,197 @@
+@import "colors.css";
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Adwaita Mono", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @text-color;
+}
+
+#custom-launcher {
+    background-color: @bg-color;
+    color: @accent-color;
+    padding: 0 15px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+#custom-launcher:hover {
+    background-color: @accent-color;
+    color: @bg-color;
+}
+
+#window {
+    background-color: @bg-color;
+    color: @secondary-color;
+    padding: 0 15px;
+    border-radius: 15px;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+#workspaces {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+#workspaces button {
+    padding: 0px 8px;
+    background-color: transparent;
+    color: @text-muted;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    border-radius: 0;
+    min-width: 0;
+    transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+    color: @accent-color;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+#workspaces button:hover {
+    background-color: transparent;
+    color: @text-color;
+    box-shadow: none;
+}
+
+#clock {
+    background-color: @bg-color;
+    color: @cyan-color;
+    border-radius: 15px;
+    padding: 0 20px;
+}
+
+#backlight, #pulseaudio, #battery, #bluetooth, #network, #tray {
+    background-color: @bg-color;
+    padding: 0 12px;
+    margin-left: 8px;
+    border-radius: 15px;
+    color: @text-color;
+}
+
+#backlight { color: @yellow-color; }
+#pulseaudio { color: @cyan-color; }
+
+#battery { color: @green-color; }
+#battery.warning { color: @yellow-color; }
+#battery.critical { color: @red-color; }
+#bluetooth { color: @text-color; }
+#bluetooth.connected { color: @accent-color; }
+#bluetooth.disabled, #bluetooth.off { color: @red-color; }
+#network { color: @green-color; }
+
+#custom-updates {
+    background-color: @bg-color;
+    padding: 0 10px;
+    margin-left: 10px;
+    border-radius: 15px;
+    color: @cyan-color;
+}
+
+#custom-updates.pending {
+    color: @yellow-color;
+}
+
+#custom-clipboard {
+    background-color: @bg-color;
+    color: @text-color;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+#custom-clipboard:hover {
+    background-color: @accent-color;
+    color: @bg-color;
+}
+
+#custom-notifications {
+    background-color: @bg-color;
+    color: @accent-color;
+    padding: 0 12px;
+    margin-left: 8px;
+    border-radius: 15px;
+}
+
+#custom-lock {
+    background-color: @bg-color;
+    color: @red-color;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+#custom-lock:hover {
+    background-color: @red-color;
+    color: @bg-color;
+}
+
+#custom-kbd_backlight {
+    background-color: @bg-color;
+    padding: 0 12px;
+    margin-left: 10px;
+    border-radius: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+#custom-kbd_backlight.zero {
+    color: @text-muted;
+}
+#custom-kbd_backlight.low {
+    color: @accent-color;
+}
+#custom-kbd_backlight.half {
+    color: @green-color;
+}
+#custom-kbd_backlight.full {
+    color: @red-color;
+}
+
+#cpu, #memory, #disk {
+    background-color: @bg-color;
+    padding: 0 12px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
+#cpu {
+    color: @purple-color;
+}
+
+#memory {
+    color: @yellow-color;
+}
+
+#memory.swap {
+    background-color: @bg-color;
+    padding: 0 12px;
+    margin-right: 10px;
+    border-radius: 15px;
+    font-weight: bold;
+    color: @text-muted;
+}
+
+#disk {
+    color: @pink-color;
+}

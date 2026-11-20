@@ -1,0 +1,5 @@
+@define-color bg-color rgba(40, 40, 40, 0.70);
+@define-color card-bg rgba(40, 40, 40, 0.50);
+@define-color text-color #ebdbb2;
+@define-color accent-color #d79921;
+@define-color hover-color rgba(60, 56, 54, 0.55);

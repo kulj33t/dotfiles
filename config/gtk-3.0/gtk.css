@@ -1,0 +1,79 @@
+@import "colors.css";
+
+window {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+
+.thunar {
+    background-color: @bg_color;
+}
+
+.thunar .sidebar, 
+.thunar .sidebar .view, 
+.thunar .sidebar list {
+    background-color: @bg_color; 
+    color: @fg_color;
+    border-right: 1px solid rgba(192, 202, 245, 0.1);
+}
+
+.thunar .view {
+    background-color: @bg_color;
+    color: @fg_color;
+}
+
+headerbar {
+    background-color: @bg_color;
+    border-bottom: 2px solid @selected_bg_color;
+    box-shadow: none;
+}
+
+headerbar button {
+    background-color: transparent;
+    color: @fg_color;
+    border: none;
+    box-shadow: none;
+}
+
+button {
+    background-color: rgba(36, 40, 59, 0.8);
+    color: @fg_color;
+    border: 1px solid @selected_bg_color;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: @selected_bg_color;
+    color: #ffffff;
+}
+
+entry {
+    background-color: rgba(36, 40, 59, 0.8);
+    color: @fg_color;
+    border: 1px solid @selected_bg_color;
+    border-radius: 5px;
+}
+
+list, row {
+    background-color: transparent;
+    color: @fg_color;
+}
+
+row:selected, iconview:selected {
+    background-color: @selected_bg_color;
+    color: @selected_fg_color;
+}
+
+menu {
+    background-color: @bg_color;
+    color: @fg_color;
+    border: 1px solid #7aa2f7;
+}
+
+scrollbar slider {
+    background-color: #414868;
+    min-width: 6px;
+    min-height: 6px;
+    border-radius: 10px;
+}

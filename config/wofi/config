@@ -1,0 +1,12 @@
+mode=drun
+show=drun
+width=640
+height=380
+location=0
+prompt=  Search Apps...
+allow_images=true
+image_size=28
+no_actions=true
+insensitive=true
+term=kitty
+hide_scroll=true
