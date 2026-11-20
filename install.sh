@@ -90,6 +90,12 @@ done
 
 source "$REPO_DIR/installer/lib/detect-distro.sh"
 DISTRO=$(detect_distro)
+if [[ "$DISTRO" == fedora ]]; then
+    # detect_distro runs in command substitution, so its sourced release fields
+    # are not visible in this shell. Load them for the Fedora source message.
+    # shellcheck source=/dev/null
+    source /etc/os-release
+fi
 case "$DISTRO" in
     arch|fedora|opensuse|debian) ;;
     debian-unsupported)
@@ -194,6 +200,6 @@ Hyprland: Lua config for version 0.55 and newer
 Lock screen: GTKLock when available; swaylock fallback
 Wallpaper: swaybg baseline; awww transitions when its package is available
 
-Start Hyprland from your display manager or a local TTY login. The installer does not
-change your login manager or system-wide GPU/boot settings.
+Hyprland auto-starts for Bash logins on TTY1; display-manager setup is unchanged.
+The installer does not change system-wide GPU or boot settings.
 EOF
