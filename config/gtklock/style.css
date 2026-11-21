@@ -1,84 +1,121 @@
 @import "colors.css";
 
 window {
-    background-color: rgba(8, 10, 16, 0.18);
+    background-color: @overlay-bg;
 }
 
 #window-box {
-    min-width: 430px;
-    padding: 30px 34px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 24px;
-    background-color: @card-bg;
-    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.42);
+    min-width: 320px;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 #info-box {
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
-#clock-label {
-    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 58px;
-    font-weight: 600;
+#user-box {
+    margin-bottom: 4px;
+}
+
+#user-image {
+    min-width: 64px;
+    min-height: 64px;
+    margin-bottom: 2px;
+}
+
+#user-name {
     color: @text-color;
-}
-
-#date-label {
-    margin-top: 4px;
     font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    color: @text-muted;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 #input-label {
-    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 13px;
     color: @text-muted;
+    font-size: 12px;
 }
 
 #input-field {
-    min-height: 42px;
-    padding: 8px 13px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 12px;
+    min-height: 34px;
+    padding: 7px 12px;
+    border: 1px solid @input-border;
+    border-radius: 7px;
     background-color: @input-bg;
     background-image: none;
     color: @text-color;
     caret-color: @accent-color;
     font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 15px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+    box-shadow: none;
 }
 
 #input-field:focus {
-    border-color: @accent-color;
-    box-shadow: 0 0 0 2px @card-bg;
+    border-color: @input-focus-border;
+    box-shadow: none;
 }
 
 #unlock-button {
-    min-height: 36px;
-    padding: 6px 18px;
-    border: 1px solid @accent-color;
-    border-radius: 10px;
-    background-color: @accent-color;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: @button-bg;
     background-image: none;
-    color: @accent-text-color;
-    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    color: @text-color;
+    box-shadow: none;
 }
 
-#unlock-button:hover {
-    background-color: @text-color;
-    border-color: @text-color;
-    color: @bg-color;
+#unlock-button:hover,
+#unlock-button:focus {
+    background-color: @button-hover-bg;
+    box-shadow: none;
+}
+
+#powerbar-revealer {
+    margin-bottom: 26px;
+}
+
+#powerbar-box {
+    background-color: transparent;
+}
+
+#powerbar-box button {
+    min-width: 64px;
+    min-height: 44px;
+    margin: 0 6px;
+    padding: 4px 8px;
+    border: none;
+    border-radius: 9px;
+    background-color: transparent;
+    background-image: none;
+    color: @text-color;
+    box-shadow: none;
+}
+
+#powerbar-box button:hover,
+#powerbar-box button:focus {
+    background-color: @power-hover-bg;
+    box-shadow: none;
+}
+
+#powerbar-box image {
+    color: @text-color;
+}
+
+#powerbar-box label {
+    color: @text-muted;
+    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
+    font-size: 11px;
 }
 
 #error-label,
 #warning-label {
-    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
-    font-size: 13px;
     color: @text-color;
+    font-family: "Inter", "SF Pro Display", "Cantarell", sans-serif;
+    font-size: 12px;
 }

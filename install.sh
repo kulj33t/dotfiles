@@ -58,6 +58,12 @@ configure_hardware "$CONFIG_HOME"
 # Generate theme files/state without contacting a running compositor or app IPC socket.
 bash "$CONFIG_HOME/scripts/theme-switch.sh" tokyo-night "" --quiet --seed-only
 
+# Build GTKLock's version-matched UI modules only after config backup/deployment,
+# so the user's module binaries remain in the active config tree.
+if declare -F os_install_optional_ui_modules >/dev/null; then
+    os_install_optional_ui_modules "$CONFIG_HOME"
+fi
+
 if [[ "$DISTRO" == fedora ]] && declare -F os_configure_display_manager >/dev/null; then
     os_configure_display_manager
 fi

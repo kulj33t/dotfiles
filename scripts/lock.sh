@@ -21,6 +21,28 @@ fi
 if command -v gtklock >/dev/null 2>&1; then
     gtklock_args=(--daemonize --style "$CONFIG_DIR/gtklock/style.css")
     [[ -n "$LOCK_BACKGROUND" ]] && gtklock_args+=(--background "$LOCK_BACKGROUND")
+
+    gtklock_version="$(gtklock --version 2>/dev/null || true)"
+    module_dir="$CONFIG_DIR/gtklock/modules/v4.0"
+    userinfo_loaded=0
+    if [[ "$gtklock_version" =~ v?4\.0\. ]]; then
+        if [[ -s "$module_dir/powerbar-module.so" ]]; then
+            gtklock_args+=(--modules "$module_dir/powerbar-module.so")
+        fi
+
+        if [[ -s "$module_dir/userinfo-module.so" ]] && command -v busctl >/dev/null 2>&1; then
+            busctl --system call org.freedesktop.DBus /org/freedesktop/DBus \
+                org.freedesktop.DBus StartServiceByName su org.freedesktop.Accounts 0 \
+                >/dev/null 2>&1 || true
+            if busctl --system status org.freedesktop.Accounts >/dev/null 2>&1; then
+                gtklock_args+=(--modules "$module_dir/userinfo-module.so")
+                userinfo_loaded=1
+            fi
+        fi
+    fi
+    if (( userinfo_loaded )) && [[ -r "$CONFIG_DIR/gtklock/layout.ui" ]]; then
+        gtklock_args+=(--layout "$CONFIG_DIR/gtklock/layout.ui")
+    fi
     exec gtklock "${gtklock_args[@]}"
 elif command -v swaylock >/dev/null 2>&1; then
     swaylock_args=(--config "$CONFIG_DIR/swaylock/config" --daemonize)

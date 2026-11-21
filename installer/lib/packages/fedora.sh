@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/gtklock-modules.sh"
+
 os_update_system() {
     if [[ "${DOTFILES_UPDATE_SYSTEM:-0}" != 1 ]]; then
         echo 'Skipping the full Fedora system upgrade.'
@@ -156,14 +158,39 @@ os_install_packages() {
         "$hyprland_package" waybar wofi SwayNotificationCenter swayidle swaylock swaybg
         xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-x11-server-Xwayland
         sddm adwaita-cursor-theme adwaita-icon-theme xdg-terminal-exec mate-polkit
+        gtklock accountsservice ImageMagick
     )
     local optional=(
         cliphist wl-clipboard brightnessctl playerctl grim slurp jq
-        zsh fastfetch htop thunar xdg-utils libnotify fontconfig ImageMagick
+        zsh fastfetch htop thunar xdg-utils libnotify fontconfig
         pavucontrol blueman wireplumber pipewire-pulseaudio curl tar xz procps-ng
-        gtklock swappy awww kitty NetworkManager NetworkManager-tui NetworkManager-gnome
+        swappy awww kitty NetworkManager NetworkManager-tui NetworkManager-gnome
     )
 
     install_required_packages 'Fedora' _install_required_fedora "${required[@]}" || return 1
     install_optional_packages _install_optional_fedora "${optional[@]}"
+
+}
+
+os_install_optional_ui_modules() {
+    local config_home="$1" gtklock_version gtklock_module_dir
+    OPTIONAL_PACKAGE_SKIPPED="${OPTIONAL_PACKAGE_SKIPPED:-0}"
+    gtklock_module_dir="$config_home/gtklock/modules/v4.0"
+    gtklock_version="$(gtklock --version 2>/dev/null || true)"
+    if [[ ! "$gtklock_version" =~ v?4\.0\. ]]; then
+        printf 'GTKLock %s does not match the pinned v4.0 modules; skipping them.\n' \
+            "${gtklock_version:-unknown version}" >&2
+        OPTIONAL_PACKAGE_SKIPPED=$((OPTIONAL_PACKAGE_SKIPPED + 1))
+    elif [[ -s "$gtklock_module_dir/userinfo-module.so" && -s "$gtklock_module_dir/powerbar-module.so" ]]; then
+        echo 'GTKLock v4 profile and power modules are already installed.'
+    elif sudo dnf install -y git gcc meson ninja-build pkgconf-pkg-config gtk3-devel accountsservice-devel; then
+        if ! install_gtklock_modules "$config_home"; then
+            OPTIONAL_PACKAGE_SKIPPED=$((OPTIONAL_PACKAGE_SKIPPED + 1))
+            printf 'GTKLock profile/power modules were skipped; GTKLock will use the basic layout.\n' >&2
+        fi
+    else
+        OPTIONAL_PACKAGE_SKIPPED=$((OPTIONAL_PACKAGE_SKIPPED + 1))
+        printf 'Could not install GTKLock module build dependencies; keeping the basic lock layout.\n' >&2
+    fi
+    return 0
 }

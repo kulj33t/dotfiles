@@ -126,7 +126,8 @@ installer_context_init() {
         "$repo_dir/installer/lib/backup.sh" \
         "$repo_dir/installer/lib/deploy.sh" \
         "$repo_dir/installer/lib/detect-hardware.sh" \
-        "$repo_dir/installer/lib/fonts.sh"; do
+        "$repo_dir/installer/lib/fonts.sh" \
+        "$repo_dir/installer/lib/gtklock-modules.sh"; do
         if [[ ! -r "$required_file" ]]; then
             printf 'Installer module is missing or unreadable: %s\n' "$required_file" >&2
             return 1

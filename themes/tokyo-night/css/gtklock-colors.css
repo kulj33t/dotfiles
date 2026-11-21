@@ -4,4 +4,10 @@
 @define-color text-muted #565f89;
 @define-color accent-color #7aa2f7;
 @define-color accent-text-color #1a1b26;
-@define-color input-bg #24283b;
+@define-color input-bg rgba(122, 162, 247, 0.20);
+@define-color overlay-bg rgba(26, 27, 38, 0.22);
+@define-color input-border rgba(192, 202, 245, 0.18);
+@define-color input-focus-border rgba(192, 202, 245, 0.30);
+@define-color button-bg rgba(192, 202, 245, 0.12);
+@define-color button-hover-bg rgba(192, 202, 245, 0.20);
+@define-color power-hover-bg rgba(192, 202, 245, 0.10);

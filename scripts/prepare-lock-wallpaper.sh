@@ -28,6 +28,7 @@ fi
 cache_dir="$CACHE_HOME/dotfiles"
 background="$cache_dir/lock-wallpaper.png"
 metadata="$cache_dir/lock-wallpaper.source"
+cache_revision='gtklock-blur-v2'
 mkdir -p "$cache_dir" || exit 1
 chmod 700 "$cache_dir" 2>/dev/null || true
 
@@ -40,7 +41,8 @@ else
 fi
 
 if [[ -s "$background" && -f "$metadata" ]] && \
-    printf '%s\n%s\n' "$wallpaper" "$source_stamp" | cmp -s - "$metadata"; then
+    printf '%s\n%s\n%s\n' "$wallpaper" "$source_stamp" "$cache_revision" | \
+        cmp -s - "$metadata"; then
     printf '%s\n' "$background"
     exit 0
 fi
@@ -50,7 +52,7 @@ temporary_metadata="$cache_dir/.lock-wallpaper.$$.source"
 trap 'rm -f "$temporary_background" "$temporary_metadata"' EXIT
 
 if ! "${image_tool[@]}" "$wallpaper" -auto-orient -resize '2560x2560>' \
-    -blur 0x18 -brightness-contrast '-12x0' -strip "PNG:$temporary_background"; then
+    -blur 0x32 -brightness-contrast '-12x0' -strip "PNG:$temporary_background"; then
     printf '%s\n' "$wallpaper"
     exit 0
 fi
@@ -60,7 +62,7 @@ if [[ ! -s "$temporary_background" ]]; then
     exit 0
 fi
 
-printf '%s\n%s\n' "$wallpaper" "$source_stamp" > "$temporary_metadata" || {
+printf '%s\n%s\n%s\n' "$wallpaper" "$source_stamp" "$cache_revision" > "$temporary_metadata" || {
     printf '%s\n' "$wallpaper"
     exit 0
 }
