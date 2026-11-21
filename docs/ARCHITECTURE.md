@@ -69,7 +69,7 @@ The active Fedora path is deliberately divided so package and distribution chang
 | Stage | Module | Behavior on failure |
 |---|---|---|
 | Detect release, architecture, paths, and required commands | `installer/lib/context.sh` and `installer/lib/detect-distro.sh` | Reject unsupported releases, architectures, Atomic editions, missing modules, or missing package managers before asking for confirmation. |
-| Refresh and upgrade Fedora packages | `installer/lib/packages/fedora.sh` | Stop before dotfile deployment if `dnf upgrade --refresh` fails. |
+| Refresh and upgrade Fedora packages | `installer/lib/packages/fedora.sh` | Stop before dotfile deployment if `dnf upgrade --refresh` fails; print available disk space and inodes for DNF caches and the user home to help diagnose local download-write errors. |
 | Select and enable the matching Hyprland COPR | `installer/lib/packages/fedora.sh` | Install/check the DNF5 COPR plugin, reuse an enabled repo when present, and stop if the selected repo cannot be enabled. |
 | Install desktop core packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Install as one required transaction. A failed transaction stops before backup or deployment. |
 | Try optional packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Attempt one package at a time; continue when a package is missing or its install fails, and log details to `~/.local/state/dotfiles-installer/optional-packages.log`. |

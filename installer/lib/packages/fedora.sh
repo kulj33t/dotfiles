@@ -4,6 +4,14 @@ os_update_system() {
     echo 'Updating Fedora packages and refreshing repository metadata...'
     if ! sudo dnf upgrade --refresh -y; then
         echo 'Fedora system update failed; no dotfiles were deployed.' >&2
+        echo 'Check free disk space, inodes, quotas, and write access for the DNF package cache.' >&2
+        local cache_dir
+        local -a diagnostic_paths=("$HOME")
+        for cache_dir in /var/cache/libdnf5 /var/cache/dnf; do
+            [[ -d "$cache_dir" ]] && diagnostic_paths+=("$cache_dir")
+        done
+        df -h "${diagnostic_paths[@]}" 2>/dev/null || true
+        df -i "${diagnostic_paths[@]}" 2>/dev/null || true
         return 1
     fi
 }
