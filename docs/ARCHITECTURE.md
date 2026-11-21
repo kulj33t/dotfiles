@@ -21,12 +21,12 @@ Login session
 | Area | Choice | Reason and behavior |
 |---|---|---|
 | Compositor | Hyprland 0.55+ with Lua | The current config uses the Lua API; older hyprlang-only builds are rejected by the installer. |
-| Application launcher | Wofi | Native Wayland launcher with GTK CSS. The centered 640×380 layout uses a macOS Spotlight style, application icons, and a blue selection state. |
+| Application launcher | Wofi | Native Wayland launcher with GTK CSS. The centered 640×420 layout uses a macOS Spotlight style, application icons, and a blue selection state. |
 | Bar | Waybar | Native packages on all four targets; JSONC modules and CSS are reused across distributions. |
 | Notifications | SwayNC | The notification daemon and history/control-center panel share theme colors with the bar. Super+N or the bell module opens the panel. |
 | Locker and idle | GTKLock when installed; swaylock fallback; swayidle coordinator | GTKLock supplies CSS customization and detaches for idle/suspend hooks. swaylock remains the lower-overhead fallback. Neither locker is pre-warmed, avoiding a resident GTK process. A custom lock binary is out of scope because it must correctly implement Wayland session-lock and PAM authentication. |
 | Wallpaper | swaybg baseline; awww when available | swaybg is the required fallback. awww supplies animated transitions when the package is available; an existing swww installation is supported for compatibility. The installer does not build either tool from source. |
-| Terminal and file manager | Kitty and Thunar | Both are launched directly from Hyprland binds. |
+| Terminal and file manager | System-selected terminal and Thunar | Super+T uses `xdg-terminal-exec` with common terminal fallbacks; Kitty remains optional. |
 | Audio | PipeWire, WirePlumber, PipeWire PulseAudio compatibility, pavucontrol | Supports Waybar's PulseAudio module, the volume control panel, and `wpctl` binds. |
 | Clipboard history | cliphist and wl-clipboard | Stores text and image clipboard entries and exposes a Wofi picker. |
 | Screenshots | grim, slurp, wl-clipboard; swappy optional | Supports whole-screen, active-window, and selected-region captures. |
@@ -44,7 +44,7 @@ The installer uses the system package manager. It does not compile compositor, w
 | Fedora 43–44 aarch64 | `nett00n/hyprland` COPR | `SwayNotificationCenter` | `pipewire-pulseaudio` | Architecture-specific COPR builds cover Fedora Asahi Remix; package and compositor version checks still run before dotfiles are deployed. |
 | Fedora 45 aarch64 | `hermitfeather/hyprland` COPR | `SwayNotificationCenter` | `pipewire-pulseaudio` | Uses the successful Fedora 45 ARM64 build; the installer checks the installed compositor version before deploying configs. |
 
-The shared required set also includes Waybar, Wofi, Kitty, swayidle, swaylock, swaybg, desktop portals, XWayland, cliphist, wl-clipboard, brightnessctl, playerctl, grim, slurp, jq, Zsh, Fastfetch, htop, Thunar, xdg-utils, libnotify, fontconfig, Adwaita icons/cursors, pavucontrol, blueman, WirePlumber, curl, tar, xz, and procps. Package spellings are mapped in `installer/lib/packages/`.
+Package requirements vary by distro. Fedora requires SDDM, Adwaita cursors, and `xdg-terminal-exec`; Kitty is optional there. The other package modules retain their own terminal requirements. Package spellings are mapped in `installer/lib/packages/`.
 
 Optional packages are GTKLock, swappy, awww, NetworkManager UI tools, and a Polkit authentication agent. When GTKLock is unavailable, swaylock remains usable; when awww is unavailable, wallpaper changes use swaybg without an animated transition. The Nerd Font is installed per user from the upstream JetBrainsMono Nerd Font release.
 
@@ -58,9 +58,9 @@ Curated palettes are the first implementation. Automatic palette extraction (for
 
 ## Installation and ownership
 
-Run `./install.sh` as a normal user with an absolute `XDG_CONFIG_HOME` if overriding the default. `install.sh` coordinates shared context checks and loads one package module from `installer/lib/packages/` for the detected distribution. The update step uses `pacman -Syu` on Arch, `dnf upgrade --refresh` on Fedora, `zypper dup` on Tumbleweed, and `apt-get update` plus `apt-get upgrade` on Debian. Each module then installs core desktop packages and attempts optional packages individually. Missing optional packages are skipped and their package-manager output is logged to `~/.local/state/dotfiles-installer/optional-packages.log`; a failed core transaction stops before configuration deployment. After a single confirmation, the installer checks Hyprland's version, backs up conflicting dotfile directories into `~/.dotfiles-backup.<timestamp>.<suffix>`, copies config/scripts/themes into `$XDG_CONFIG_HOME`, links the Bash/Zsh startup files, downloads the Nerd Font with a time limit, and seeds theme files without contacting a running desktop session.
+Run `./install.sh` as a normal user with an absolute `XDG_CONFIG_HOME` if overriding the default. `install.sh` coordinates shared context checks and loads one package module from `installer/lib/packages/` for the detected distribution. Arch runs `pacman -Syu`, Tumbleweed runs `zypper dup`, and Debian runs `apt-get update` plus `apt-get upgrade`. Fedora skips the full `dnf upgrade --refresh` by default; set `DOTFILES_UPDATE_SYSTEM=1` to opt in. Each module then installs core desktop packages and attempts optional packages individually. Missing optional packages are skipped and their package-manager output is logged to `~/.local/state/dotfiles-installer/optional-packages.log`; a failed core transaction stops before configuration deployment. On Fedora, the installer enables SDDM as the default display manager, sets `graphical.target`, and configures an Adwaita greeter cursor for the next boot. After package setup, it checks Hyprland's version, backs up conflicting dotfile directories into `~/.dotfiles-backup.<timestamp>.<suffix>`, copies config/scripts/themes into `$XDG_CONFIG_HOME`, links the Bash/Zsh startup files, downloads the Nerd Font with a time limit, and seeds theme files without contacting a running desktop session.
 
-The Bash profile auto-starts Hyprland on TTY1; the installer does not configure a display manager, enable a network service, change boot settings, or force GPU environment variables. GPU detection is informational so Mesa, NVIDIA, and Asahi defaults remain under the distro's control.
+The Bash profile auto-starts Hyprland on TTY1. Fedora uses SDDM's session picker for Hyprland and other installed sessions; GTKLock remains the Hyprland session's lock screen. Other distro modules keep their existing display-manager setup. The installer does not enable a network service or force GPU environment variables. GPU detection is informational so Mesa, NVIDIA, and Asahi defaults remain under the distro's control.
 
 ## Fedora execution and failure boundaries
 
@@ -69,8 +69,9 @@ The active Fedora path is deliberately divided so package and distribution chang
 | Stage | Module | Behavior on failure |
 |---|---|---|
 | Detect release, architecture, paths, and required commands | `installer/lib/context.sh` and `installer/lib/detect-distro.sh` | Reject unsupported releases, architectures, Atomic editions, missing modules, or missing package managers before asking for confirmation. |
-| Refresh and upgrade Fedora packages | `installer/lib/packages/fedora.sh` | Stop before dotfile deployment if `dnf upgrade --refresh` fails; print available disk space and inodes for DNF caches and the user home to help diagnose local download-write errors. |
+| Refresh and optionally upgrade Fedora packages | `installer/lib/packages/fedora.sh` | Skip the full system upgrade by default; `DOTFILES_UPDATE_SYSTEM=1` opts in. On failure, print available disk space and inodes for DNF caches and the user home. |
 | Select and enable the matching Hyprland COPR | `installer/lib/packages/fedora.sh` | Install/check the DNF5 COPR plugin, reuse an enabled repo when present, and stop if the selected repo cannot be enabled. |
+| Install SDDM and select it for Fedora's next boot | `installer/lib/packages/fedora.sh` | Install SDDM and Adwaita cursors, verify a Hyprland session entry exists, disable the old display-manager service without stopping the current session, enable SDDM, and set `graphical.target`. |
 | Install desktop core packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Install as one required transaction. A failed transaction stops before backup or deployment. |
 | Try optional packages | `installer/lib/packages/fedora.sh` through `installer/lib/packages/common.sh` | Attempt one package at a time; continue when a package is missing or its install fails, and log details to `~/.local/state/dotfiles-installer/optional-packages.log`. |
 | Confirm Hyprland API version, back up, deploy, configure, and seed theme state | `install.sh` plus shared `installer/lib/` modules | Reject Hyprland older than 0.55 before deployment; seed files without calling compositor or Kitty IPC, so install completion does not depend on a running desktop session. |

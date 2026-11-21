@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
 
 os_update_system() {
+    if [[ "${DOTFILES_UPDATE_SYSTEM:-0}" != 1 ]]; then
+        echo 'Skipping the full Fedora system upgrade.'
+        echo 'Set DOTFILES_UPDATE_SYSTEM=1 when you want the installer to run dnf upgrade --refresh.'
+        return 0
+    fi
+
     echo 'Updating Fedora packages and refreshing repository metadata...'
     if ! sudo dnf upgrade --refresh -y; then
         echo 'Fedora system update failed; no dotfiles were deployed.' >&2
@@ -22,6 +28,68 @@ _install_required_fedora() {
 
 _install_optional_fedora() {
     sudo dnf install -y "$1"
+}
+
+os_configure_display_manager() {
+    local session_dir hyprland_session_found=0
+    for session_dir in /usr/share/wayland-sessions /usr/local/share/wayland-sessions; do
+        if [[ -d "$session_dir" ]] && \
+            find "$session_dir" -maxdepth 1 -type f -iname '*hyprland*.desktop' -print -quit 2>/dev/null | grep -q .; then
+            hyprland_session_found=1
+            break
+        fi
+    done
+    if (( hyprland_session_found == 0 )); then
+        echo 'The Hyprland Wayland session entry is missing; SDDM cannot offer Hyprland in its session picker.' >&2
+        echo 'Check that the selected Hyprland package installed a file under /usr/share/wayland-sessions/.' >&2
+        return 1
+    fi
+
+    if ! sudo install -d -m 0755 /etc/sddm.conf.d; then
+        echo 'Could not create /etc/sddm.conf.d for SDDM configuration.' >&2
+        return 1
+    fi
+    if ! printf '[Theme]\nCursorTheme=Adwaita\nCursorSize=24\n' | \
+        sudo tee /etc/sddm.conf.d/99-dotfiles-cursor.conf >/dev/null; then
+        echo 'Could not set a visible Adwaita cursor for the SDDM greeter.' >&2
+        return 1
+    fi
+
+    local current_dm_path current_dm previous_target
+    current_dm_path="$(readlink -f /etc/systemd/system/display-manager.service 2>/dev/null || true)"
+    current_dm="${current_dm_path##*/}"
+    previous_target="$(systemctl get-default 2>/dev/null || true)"
+
+    if [[ -n "$current_dm" && "$current_dm" != sddm.service ]]; then
+        printf 'Disabling the previous display manager service (%s) for the next boot.\n' "$current_dm"
+        if ! sudo systemctl disable "$current_dm"; then
+            printf 'Could not disable the previous display manager service: %s\n' "$current_dm" >&2
+            return 1
+        fi
+    fi
+
+    if ! sudo systemctl enable --force sddm.service; then
+        echo 'Could not set SDDM as the default display manager.' >&2
+        if [[ -n "$current_dm" && "$current_dm" != sddm.service ]]; then
+            sudo systemctl enable --force "$current_dm" || true
+        fi
+        return 1
+    fi
+    if ! sudo systemctl set-default graphical.target; then
+        echo 'Could not set graphical.target as the default boot target.' >&2
+        sudo systemctl disable sddm.service || true
+        if [[ -n "$previous_target" ]]; then
+            sudo systemctl set-default "$previous_target" || true
+        fi
+        if [[ -n "$current_dm" && "$current_dm" != sddm.service ]]; then
+            sudo systemctl enable --force "$current_dm" || true
+        fi
+        return 1
+    fi
+
+    echo 'SDDM is enabled as the default display manager for the next boot.'
+    echo 'Choose Hyprland or another installed desktop session from SDDM at login.'
+    echo 'The previous display manager package remains installed; only its service is disabled.'
 }
 
 os_install_packages() {
@@ -85,14 +153,15 @@ os_install_packages() {
     fi
 
     local required=(
-        "$hyprland_package" waybar wofi kitty SwayNotificationCenter swayidle swaylock swaybg
+        "$hyprland_package" waybar wofi SwayNotificationCenter swayidle swaylock swaybg
         xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-x11-server-Xwayland
+        sddm adwaita-cursor-theme xdg-terminal-exec
     )
     local optional=(
         cliphist wl-clipboard brightnessctl playerctl grim slurp jq
-        zsh fastfetch htop thunar xdg-utils libnotify fontconfig adwaita-icon-theme adwaita-cursor-theme
+        zsh fastfetch htop thunar xdg-utils libnotify fontconfig adwaita-icon-theme
         pavucontrol blueman wireplumber pipewire-pulseaudio curl tar xz procps-ng
-        gtklock swappy awww NetworkManager NetworkManager-tui NetworkManager-gnome polkit-gnome
+        gtklock swappy awww kitty NetworkManager NetworkManager-tui NetworkManager-gnome polkit-gnome
     )
 
     install_required_packages 'Fedora' _install_required_fedora "${required[@]}" || return 1

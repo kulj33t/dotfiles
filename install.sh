@@ -14,7 +14,11 @@ source "$REPO_DIR/installer/lib/deploy.sh"
 source "$REPO_DIR/installer/lib/detect-hardware.sh"
 source "$REPO_DIR/installer/lib/fonts.sh"
 
-read -r -p 'Update system packages, install the desktop packages, and deploy these configs? [y/N]: ' confirm
+if [[ "$DISTRO" == fedora ]]; then
+    echo 'Fedora setup installs SDDM and makes it the default graphical display manager for the next boot.'
+    echo 'The full Fedora system upgrade is skipped by default; set DOTFILES_UPDATE_SYSTEM=1 to request it.'
+fi
+read -r -p 'Install the desktop packages and deploy these configs? [y/N]: ' confirm
 [[ "$confirm" =~ ^[yY]$ ]] || { echo 'Cancelled.'; exit 0; }
 if ! sudo -v; then
     echo 'Could not authenticate with sudo; no system changes were made.' >&2
@@ -54,6 +58,10 @@ configure_hardware "$CONFIG_HOME"
 # Generate theme files/state without contacting a running compositor or app IPC socket.
 bash "$CONFIG_HOME/scripts/theme-switch.sh" tokyo-night "" --quiet --seed-only
 
+if [[ "$DISTRO" == fedora ]] && declare -F os_configure_display_manager >/dev/null; then
+    os_configure_display_manager
+fi
+
 cat <<EOF
 
 Configuration deployed to: $CONFIG_HOME
@@ -61,9 +69,14 @@ Hyprland: Lua config for version 0.55 and newer
 Lock screen: GTKLock when available; swaylock fallback
 Wallpaper: swaybg baseline; awww transitions when its package is available
 
-Hyprland auto-starts for Bash logins on TTY1; display-manager setup is unchanged.
-The installer updated the system packages and did not change GPU or boot settings.
+Hyprland auto-starts for Bash logins on TTY1.
 EOF
+
+if [[ "$DISTRO" == fedora ]]; then
+    echo 'SDDM is enabled for the next boot; its session picker lists Hyprland and other installed sessions.'
+    echo 'The SDDM greeter uses the Adwaita cursor theme at 24px.'
+fi
+echo 'Network-service and GPU-driver settings were left unchanged.'
 
 if (( OPTIONAL_PACKAGE_SKIPPED > 0 )); then
     printf '%s optional packages were skipped. Details: %s\n' \

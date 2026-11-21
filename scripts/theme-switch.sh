@@ -64,8 +64,8 @@ EOF
 if [[ "$SEED_ONLY" != "--seed-only" ]]; then
     if command -v hyprctl >/dev/null 2>&1 && [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
         if command -v timeout >/dev/null 2>&1; then
-            timeout 3s hyprctl eval "hl.config({ ['general.col.active_border'] = '$HYPR_BORDER_ACTIVE' })" >/dev/null 2>&1 || true
-            timeout 3s hyprctl eval "hl.config({ ['general.col.inactive_border'] = '$HYPR_BORDER_INACTIVE' })" >/dev/null 2>&1 || true
+            timeout 3s hyprctl eval "hl.config({ general = { col = { active_border = $HYPR_BORDER_ACTIVE_LUA } } })" >/dev/null 2>&1 || true
+            timeout 3s hyprctl eval "hl.config({ general = { col = { inactive_border = '$HYPR_BORDER_INACTIVE' } } })" >/dev/null 2>&1 || true
             timeout 3s hyprctl eval "hl.config({ ['decoration.shadow.color'] = '$HYPR_SHADOW' })" >/dev/null 2>&1 || true
         fi
     fi

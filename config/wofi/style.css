@@ -1,23 +1,30 @@
 @import "colors.css";
 
-window {
-    margin: 0px;
-    border: 1px solid @accent-color;
-    background-color: @bg-alpha;
-    border-radius: 18px;
+* {
     font-family: "JetBrainsMono Nerd Font", "Adwaita Mono", sans-serif;
     font-size: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+}
+
+window {
+    margin: 0;
+    border: 1px solid @accent-color;
+    border-radius: 16px;
+    background-color: @bg-alpha;
+}
+
+#outer-box {
+    padding: 10px;
+    border-radius: 16px;
+    background-color: @bg-alpha;
 }
 
 #input {
-    margin: 16px 16px 10px 16px;
-    padding: 10px 14px;
+    margin: 8px 8px 10px;
+    padding: 10px 12px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: @text-color;
     background-color: @input-bg;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 10px;
 }
 
 #input:focus {
@@ -25,17 +32,20 @@ window {
 }
 
 #inner-box {
-    margin: 6px 16px 16px 16px;
+    margin: 0 8px 8px;
+    background-color: transparent;
+}
+
+#scroll {
     background-color: transparent;
 }
 
 #entry {
     margin: 3px 0px;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: 8px 10px;
+    border-radius: 9px;
     background-color: transparent;
     color: @text-color;
-    transition: all 0.15s ease;
 }
 
 #entry:selected {
@@ -44,9 +54,13 @@ window {
     font-weight: bold;
 }
 
+#entry:selected #text {
+    color: #1a1b26;
+}
+
 #text {
     margin-left: 10px;
-    color: inherit;
+    color: @text-color;
 }
 
 #img {

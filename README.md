@@ -10,9 +10,9 @@ The compositor config uses Hyprland's Lua API and requires Hyprland 0.55 or newe
 ./install.sh
 ```
 
-Run as your regular user. After one confirmation, the installer updates system packages (Arch and Tumbleweed run their full system upgrade), installs core packages, tries optional packages individually, and deploys the configs. Missing optional packages are skipped and logged to `~/.local/state/dotfiles-installer/optional-packages.log`; if a core package transaction fails, deployment stops before replacing configs. Existing config folders and replaced shell startup files are moved to `~/.dotfiles-backup.<timestamp>.<suffix>`; an existing `.zshrc` is included because the managed `.zshenv` redirects Zsh to the config directory. Configs, scripts, and theme assets are copied to `$XDG_CONFIG_HOME` (usually `~/.config`), so edits to the installed config do not change the checkout. Bash/Zsh startup files are linked from this repository.
+Run as your regular user. After one confirmation, the installer installs core packages, tries optional packages individually, and deploys the configs. Fedora installs SDDM and sets it as the default graphical display manager for the next boot; the full system upgrade is skipped by default. To request that upgrade, run `DOTFILES_UPDATE_SYSTEM=1 ./install.sh`. Arch and Tumbleweed run their full system upgrade. Missing optional packages are skipped and logged to `~/.local/state/dotfiles-installer/optional-packages.log`; if a core package transaction fails, deployment stops before replacing configs. Existing config folders and replaced shell startup files are moved to `~/.dotfiles-backup.<timestamp>.<suffix>`; an existing `.zshrc` is included because the managed `.zshenv` redirects Zsh to the config directory. Configs, scripts, and theme assets are copied to `$XDG_CONFIG_HOME` (usually `~/.config`), so edits to the installed config do not change the checkout. Bash/Zsh startup files are linked from this repository.
 
-The installer leaves display-manager, network-service, boot, and GPU-driver settings alone. Fedora uses a third-party COPR because current Fedora base packages do not provide the Lua-compatible Hyprland build; Debian installs Hyprland from official Trixie backports. Fedora Atomic editions and openSUSE MicroOS, Aeon, and Kalpa are rejected because their deployment model needs a different installer.
+On Fedora, SDDM becomes the default display manager and the machine's default boot target becomes `graphical.target`; this takes effect after reboot. The installer disables the previous display-manager service for the next boot but leaves its package installed, so its desktop session can still be selected in SDDM. The SDDM greeter gets the Adwaita cursor theme at 24px. GTKLock remains the in-session screen locker and uses swaylock as a fallback. Other distro modules leave display-manager settings alone. The installer leaves network-service and GPU-driver settings unchanged. Fedora uses a third-party COPR because current Fedora base packages do not provide the Lua-compatible Hyprland build; Debian installs Hyprland from official Trixie backports. Fedora Atomic editions and openSUSE MicroOS, Aeon, and Kalpa are rejected because their deployment model needs a different installer.
 
 ## Desktop components
 
@@ -22,7 +22,7 @@ The installer leaves display-manager, network-service, boot, and GPU-driver sett
 - **SwayNC** — notification daemon and history/control center, opened with Super+N or the Waybar bell.
 - **GTKLock / swaylock / swayidle** — GTKLock provides the themed lock screen when installed; swaylock is the fast fallback and shares the active palette. swayidle locks after 3 minutes idle, turns displays off after 5 minutes, and locks before suspend. GTKLock is started on demand rather than kept resident.
 - **swaybg / awww** — swaybg works as the baseline wallpaper backend. awww adds animated transitions when available as a package; existing swww installations also work.
-- **Kitty and Thunar** — terminal and file manager.
+- **Default terminal and Thunar** — Super+T launches the system-selected terminal through `xdg-terminal-exec`, with common terminal fallbacks. Kitty is optional.
 - **PipeWire, WirePlumber, and PipeWire PulseAudio** — audio controls and Waybar audio status.
 - **cliphist, wl-clipboard, grim, slurp, jq** — clipboard and screenshots.
 
@@ -41,7 +41,7 @@ See [the architecture guide](docs/ARCHITECTURE.md) for the stack diagram, packag
 | Shortcut | Action |
 |---|---|
 | Super+Space | App launcher |
-| Super+T | Kitty |
+| Super+T | System-selected terminal |
 | Super+E | Thunar |
 | Super+N | SwayNC control center |
 | Super+L | Lock screen |
@@ -51,4 +51,4 @@ See [the architecture guide](docs/ARCHITECTURE.md) for the stack diagram, packag
 | Super+Shift+W | Wallpaper picker |
 | Super+V | Clipboard history |
 
-Start Hyprland from your display manager, or log in through Bash on TTY1 to use the included auto-start profile. The installer does not configure a display manager.
+On Fedora, choose Hyprland or another installed session from SDDM's session picker. You can also log in through Bash on TTY1 to use the included auto-start profile. Other distro modules keep the existing display-manager setup.

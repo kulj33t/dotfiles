@@ -2,7 +2,8 @@
 set -u
 
 if command -v nmtui >/dev/null 2>&1; then
-    exec kitty -e nmtui
+    CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}"
+    exec "$CONFIG_DIR/scripts/terminal-launch.sh" nmtui
 elif command -v nm-connection-editor >/dev/null 2>&1; then
     exec nm-connection-editor
 fi

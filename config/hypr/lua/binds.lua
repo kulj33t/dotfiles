@@ -5,7 +5,11 @@ end
 local config_home = os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")
 local scripts = config_home .. "/scripts/"
 
-command("SUPER + T", "kitty")
+local function shell_quote(value)
+    return "'" .. value:gsub("'", "'\\''") .. "'"
+end
+
+command("SUPER + T", "bash " .. shell_quote(scripts .. "terminal-launch.sh"))
 command("SUPER + E", "thunar")
 command("SUPER + SPACE", "wofi --show drun")
 command("SUPER + B", "xdg-open https://")

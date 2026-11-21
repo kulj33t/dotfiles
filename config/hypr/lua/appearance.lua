@@ -27,7 +27,6 @@ hl.config({
         },
     },
     dwindle = {
-        pseudotile = true,
         preserve_split = true,
     },
     misc = {
@@ -46,8 +45,15 @@ hl.config({
     },
 })
 hl.config({
-    ["general.col.active_border"] = "rgba(7aa2f7ee) rgba(bb9af7ee) 45deg",
-    ["general.col.inactive_border"] = "rgba(595959aa)",
+    general = {
+        col = {
+            active_border = {
+                colors = { "rgba(7aa2f7ee)", "rgba(bb9af7ee)" },
+                angle = 45,
+            },
+            inactive_border = "rgba(595959aa)",
+        },
+    },
 })
 
 hl.curve("fluent", {
