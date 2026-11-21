@@ -9,9 +9,12 @@ OPT_SHUTDOWN="Power Off"
 OPT_LOGOUT="Exit Hyprland"
 
 notify_failure() {
-    local action="$1"
+    local action="$1" detail="${2:-}"
     if command -v notify-send >/dev/null 2>&1; then
-        notify-send -a dotFiles "Power action failed" "$action could not be started. Check the session authorization agent." 2>/dev/null || true
+        detail="${detail//$'\n'/ }"
+        [[ -n "$detail" ]] || detail='The action was denied or logind returned an error.'
+        notify-send -a dotFiles --urgency=critical \
+            "Power action failed" "$action: $detail" 2>/dev/null || true
     fi
 }
 
@@ -23,8 +26,16 @@ run_logind_action() {
         return 1
     fi
 
-    if ! loginctl "$action"; then
-        notify_failure "$action"
+    if [[ -x "$CONFIG_DIR/scripts/start-polkit-agent.sh" ]] && \
+        ! bash "$CONFIG_DIR/scripts/start-polkit-agent.sh"; then
+        notify_failure "$action" 'No graphical Polkit authentication agent is available.'
+        return 1
+    fi
+
+    local action_output
+    if ! action_output="$(loginctl "$action" 2>&1)"; then
+        notify_failure "$action" "$action_output"
+        [[ -n "$action_output" ]] && printf '%s\n' "$action_output" >&2
         return 1
     fi
     return 0

@@ -17,18 +17,7 @@ if ! pgrep -u "$UID" -x swaync >/dev/null 2>&1; then
     swaync >/dev/null 2>&1 &
 fi
 
-if ! pgrep -u "$UID" -f 'polkit-(gnome|mate)-authentication-agent-1|xfce-polkit|lxpolkit' >/dev/null 2>&1; then
-    for agent in polkit-mate-authentication-agent-1 \
-        /usr/libexec/polkit-mate-authentication-agent-1 \
-        polkit-gnome-authentication-agent-1 \
-        /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
-        /usr/libexec/polkit-gnome-authentication-agent-1; do
-        if command -v "$agent" >/dev/null 2>&1 || [[ -x "$agent" ]]; then
-            "$agent" >/dev/null 2>&1 &
-            break
-        fi
-    done
-fi
+bash "$CONFIG_DIR/scripts/start-polkit-agent.sh" >/dev/null 2>&1 || true
 
 if command -v cliphist >/dev/null 2>&1 && command -v wl-paste >/dev/null 2>&1; then
     wl-paste --type text --watch cliphist store >/dev/null 2>&1 &

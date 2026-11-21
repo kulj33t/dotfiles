@@ -127,7 +127,7 @@ installer_context_init() {
         "$repo_dir/installer/lib/deploy.sh" \
         "$repo_dir/installer/lib/detect-hardware.sh" \
         "$repo_dir/installer/lib/fonts.sh" \
-        "$repo_dir/installer/lib/gtklock-modules.sh"; do
+        "$repo_dir/scripts/start-polkit-agent.sh"; do
         if [[ ! -r "$required_file" ]]; then
             printf 'Installer module is missing or unreadable: %s\n' "$required_file" >&2
             return 1

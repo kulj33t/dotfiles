@@ -14,12 +14,17 @@ local function make_rule(match, effects)
     return rule
 end
 
-for _, namespace in ipairs({ "wofi", "swaync-control-center", "swaync-notification-window", "gtklock" }) do
+for _, namespace in ipairs({ "wofi", "swaync-control-center", "gtklock" }) do
     hl.layer_rule(make_rule(
         { namespace = namespace },
         { blur = true, ignore_alpha = 0.3, blur_popups = true }
     ))
 end
+
+hl.layer_rule(make_rule(
+    { namespace = "swaync-notification-window" },
+    { blur = true, ignore_alpha = 0.1, blur_popups = true }
+))
 
 for _, class in ipairs({ "^(pavucontrol)$", "^(blueman-manager)$", "^(nm-connection-editor)$", "^(swappy)$" }) do
     hl.window_rule(make_rule({ class = class }, { float = true, center = true }))

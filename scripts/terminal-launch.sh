@@ -6,18 +6,15 @@ set -u
 if command -v kitty >/dev/null 2>&1; then
     kitty_target="${KITTY_LISTEN_ON:-unix:/tmp/kitty}"
     if (( $# == 0 )); then
-        if kitty @ --to "$kitty_target" launch --type=os-window >/dev/null 2>&1; then
-            exit 0
-        fi
-    else
-        if kitty @ --to "$kitty_target" launch --type=os-window "$@" >/dev/null 2>&1; then
-            exit 0
-        fi
+        # Kitty's single-instance mode reliably creates a new top-level OS
+        # window on every invocation, including when launched by Hyprland.
+        exec kitty --single-instance --instance-group=dotfiles
     fi
 
-    if (( $# == 0 )); then
-        exec kitty
+    if kitty @ --to "$kitty_target" launch --type=os-window "$@" >/dev/null 2>&1; then
+        exit 0
     fi
+
     exec kitty -e "$@"
 fi
 

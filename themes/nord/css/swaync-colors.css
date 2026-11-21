@@ -1,5 +1,6 @@
 @define-color bg-color rgba(46, 52, 64, 0.70);
 @define-color card-bg rgba(46, 52, 64, 0.50);
+@define-color notification-bg rgba(46, 52, 64, 0.68);
 @define-color text-color #eceff4;
 @define-color accent-color #88c0d0;
 @define-color hover-color rgba(67, 76, 94, 0.55);

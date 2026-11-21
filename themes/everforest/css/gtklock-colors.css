@@ -1,13 +1,5 @@
-@define-color bg-color #2d353b;
-@define-color card-bg rgba(45, 53, 59, 0.80);
 @define-color text-color #d3c6aa;
-@define-color text-muted #859289;
 @define-color accent-color #a7c080;
-@define-color accent-text-color #2d353b;
 @define-color input-bg rgba(167, 192, 128, 0.20);
 @define-color overlay-bg rgba(45, 53, 59, 0.22);
-@define-color input-border rgba(211, 198, 170, 0.18);
 @define-color input-focus-border rgba(211, 198, 170, 0.30);
-@define-color button-bg rgba(211, 198, 170, 0.12);
-@define-color button-hover-bg rgba(211, 198, 170, 0.20);
-@define-color power-hover-bg rgba(211, 198, 170, 0.10);
