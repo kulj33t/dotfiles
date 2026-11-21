@@ -43,26 +43,44 @@ window {
 #entry {
     margin: 3px 0px;
     padding: 8px 10px;
+    min-height: 34px;
+    border: 1px solid transparent;
     border-radius: 9px;
     background-color: transparent;
     color: @text-color;
 }
 
-#entry:selected {
+#entry:hover,
+#entry:focus {
+    border-color: @accent-color;
+    background-color: @hover-bg;
+    color: @text-color;
+}
+
+#entry:selected,
+#entry:selected:focus,
+#entry:selected:hover {
+    border: 1px solid @accent-color;
+    background-image: none;
     background-color: @accent-color;
-    color: #1a1b26;
+    color: @accent-text-color;
     font-weight: bold;
 }
 
-#entry:selected #text {
-    color: #1a1b26;
+#entry:selected #text,
+#entry:selected:focus #text,
+#entry:selected:hover #text {
+    background-image: none;
+    color: @accent-text-color;
 }
 
 #text {
-    margin-left: 10px;
+    margin: 0 0 0 10px;
     color: @text-color;
 }
 
 #img {
+    min-width: 28px;
+    min-height: 28px;
     margin-right: 4px;
 }

@@ -155,13 +155,13 @@ os_install_packages() {
     local required=(
         "$hyprland_package" waybar wofi SwayNotificationCenter swayidle swaylock swaybg
         xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-x11-server-Xwayland
-        sddm adwaita-cursor-theme xdg-terminal-exec
+        sddm adwaita-cursor-theme adwaita-icon-theme xdg-terminal-exec mate-polkit
     )
     local optional=(
         cliphist wl-clipboard brightnessctl playerctl grim slurp jq
-        zsh fastfetch htop thunar xdg-utils libnotify fontconfig adwaita-icon-theme
+        zsh fastfetch htop thunar xdg-utils libnotify fontconfig ImageMagick
         pavucontrol blueman wireplumber pipewire-pulseaudio curl tar xz procps-ng
-        gtklock swappy awww kitty NetworkManager NetworkManager-tui NetworkManager-gnome polkit-gnome
+        gtklock swappy awww kitty NetworkManager NetworkManager-tui NetworkManager-gnome
     )
 
     install_required_packages 'Fedora' _install_required_fedora "${required[@]}" || return 1

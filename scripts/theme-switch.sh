@@ -106,6 +106,9 @@ printf '%s\n' "$THEME" > "$CONFIG_DIR/dotfiles/current_theme"
 if [[ -n "$WALLPAPER" && -x "$CONFIG_DIR/scripts/wallpaper-set.sh" ]]; then
     if [[ "$SEED_ONLY" == "--seed-only" ]]; then
         printf '%s\n' "$WALLPAPER" > "$CONFIG_DIR/dotfiles/current_wallpaper"
+        if [[ -x "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" ]]; then
+            "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" "$WALLPAPER" >/dev/null 2>&1 || true
+        fi
     else
         "$CONFIG_DIR/scripts/wallpaper-set.sh" "$WALLPAPER"
     fi

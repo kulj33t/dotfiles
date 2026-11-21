@@ -38,6 +38,9 @@ if [[ -n "$WALLPAPER_CMD" ]]; then
         --transition-fps 60 --transition-step 90 --transition-duration 1.5 >/dev/null 2>&1; then
         pkill -u "$UID" -x swaybg 2>/dev/null || true
         printf '%s\n' "$WALLPAPER" > "$CONFIG_DIR/dotfiles/current_wallpaper"
+        if [[ -x "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" ]]; then
+            "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" "$WALLPAPER" >/dev/null 2>&1 || true
+        fi
         exit 0
     fi
 fi
@@ -46,6 +49,9 @@ if command -v swaybg >/dev/null 2>&1; then
     pkill -u "$UID" -x swaybg 2>/dev/null || true
     swaybg -i "$WALLPAPER" -m fill >/dev/null 2>&1 &
     printf '%s\n' "$WALLPAPER" > "$CONFIG_DIR/dotfiles/current_wallpaper"
+    if [[ -x "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" ]]; then
+        "$CONFIG_DIR/scripts/prepare-lock-wallpaper.sh" "$WALLPAPER" >/dev/null 2>&1 || true
+    fi
     exit 0
 fi
 

@@ -17,8 +17,10 @@ if ! pgrep -u "$UID" -x swaync >/dev/null 2>&1; then
     swaync >/dev/null 2>&1 &
 fi
 
-if ! pgrep -u "$UID" -f 'polkit-gnome-authentication-agent-1' >/dev/null 2>&1; then
-    for agent in polkit-gnome-authentication-agent-1 \
+if ! pgrep -u "$UID" -f 'polkit-(gnome|mate)-authentication-agent-1|xfce-polkit|lxpolkit' >/dev/null 2>&1; then
+    for agent in polkit-mate-authentication-agent-1 \
+        /usr/libexec/polkit-mate-authentication-agent-1 \
+        polkit-gnome-authentication-agent-1 \
         /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 \
         /usr/libexec/polkit-gnome-authentication-agent-1; do
         if command -v "$agent" >/dev/null 2>&1 || [[ -x "$agent" ]]; then
